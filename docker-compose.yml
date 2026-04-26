@@ -6,8 +6,8 @@ services:
     container_name: postgres_diploma
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: diploma_db
     ports:
       - "5432:5432"

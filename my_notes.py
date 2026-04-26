@@ -1,5 +1,6 @@
 # TODO 
 # stworzenie clena warstwy silver https://chatgpt.com/s/t_69edd1511464819180b1e9196657f3fb
+# Minimalna wartość spożycia sodu to 2000mg na dobe. Dla ustawienia jakies parametrów trzeba albo zrobic to na 1000kcal albo dodac doatkowy parametr jak aktywnosc ifzyczna i potliwosc poniewaz wraz z zwiekszniem potliwosci zapottrzebowanie na sód wzrasta więc wtedy mozna by określić czy za duzo maja czy za mało. Sprawdzić czy jest jakis parametr odnosnie aktywnosci
 
 
 # Do zbadania
@@ -37,6 +38,7 @@ Co zrobiłem
 
 1. Sprawdzam sanity check danych i je oczyszczam jednoczesnie zapoznając sie z kolumnami ogólnymi czyli od SEQN - DR1HELP. Reszta kolumn jest wyspecjalizowana
 2. WTDRD1 widze ze ma wartość przy niektórych  5.397605346934028e-79 co oznacza bliską zeru. Widze tez zaleznosc ze te same jednostki WTDR2D maja missing value
-3. Określam warunki pipelineu, który wrzuci przefiltrowane dane 
-
+3. Tworze warstwe silver gdzie będę miał wstępnie ustrykturyzowane dane według siebie
+4. Tworze docker-compose z postgresql i zapisuje warstwe silver do niego
+5. Przechodzę do warstwy gold
 '''
