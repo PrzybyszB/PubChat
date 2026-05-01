@@ -1,6 +1,5 @@
 # TODO 
 # stworzenie clena warstwy silver https://chatgpt.com/s/t_69edd1511464819180b1e9196657f3fb
-# Minimalna wartość spożycia sodu to 2000mg na dobe. Dla ustawienia jakies parametrów trzeba albo zrobic to na 1000kcal albo dodac doatkowy parametr jak aktywnosc ifzyczna i potliwosc poniewaz wraz z zwiekszniem potliwosci zapottrzebowanie na sód wzrasta więc wtedy mozna by określić czy za duzo maja czy za mało. Sprawdzić czy jest jakis parametr odnosnie aktywnosci
 
 
 # Do zbadania
