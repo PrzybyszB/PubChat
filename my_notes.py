@@ -1,5 +1,11 @@
 # TODO 
-# stworzenie clena warstwy silver https://chatgpt.com/s/t_69edd1511464819180b1e9196657f3fb
+# ogarnąc jak tworzyć dobre query do pubmedu aby dostawac takie badania dietettyczne ? Moze czesc artykulow bedzie maloz wiazana i trudno. dokonczyc caly proces wyszukiwania zeby mozna byloz aczac dzialac z llm najwyzej pozniejbedzie sie to wyszukiwania dopracowyuwac albo artykukly
+# https://chatgpt.com/s/t_69f57cce07c08191a7945e3f1b2a6c4c
+# Tworze tabele w postgresql pod artykuły
+# Łącze sie z api pubmed
+# pobieram artykuły 100 co mnie interesuja dla sodium i fiber
+# astepnie oddaje stery llmowi zebymmi wyswietlil ich quality score
+# tworze ifem podliczenie i zapis do bazy danych jaki ma quality score
 
 
 # Do zbadania
@@ -40,4 +46,5 @@ Co zrobiłem
 3. Tworze warstwe silver gdzie będę miał wstępnie ustrykturyzowane dane według siebie
 4. Tworze docker-compose z postgresql i zapisuje warstwe silver do niego
 5. Przechodzę do warstwy gold
+6. Następnie zajmuje sie pobieraniem badan z pubmed. Zastanawiam siejak tworzyc prawidłowe zapytania aby publikacje które pobiore były jak najblizsze zywieniu
 '''
