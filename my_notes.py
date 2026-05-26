@@ -1,19 +1,26 @@
 # TODO 
+# sprawdzic warstwe gold cohort statsczy jest okej i co ona ukazuje
+# polaczyc sie z api LLM
 # dodac do tabeli quality score zeby byc defaultowo pusty
 # dac LLMowie do ogarniecia abstract zeby z niego wyciagnac czy było na ludziahc czy na zwierzetach i cos jeszce moze tam ogarnac ?
 # ustalic ten quality score
+
 # https://chatgpt.com/s/t_69f57cce07c08191a7945e3f1b2a6c4c
 # pobieram artykuły 100 co mnie interesuja dla sodium i fiber
 # astepnie oddaje stery llmowi zebymmi wyswietlil ich quality score
 # tworze ifem podliczenie i zapis do bazy danych jaki ma quality score
 
+# po stworzeniu quality score jazda z embedingiem (do embdeingow)
 
 # Do zbadania
 # Czy sprawdzamy outlinery ?
 
 
-
-
+# Po sptkaniu 14.05
+# Poczytac o twardo ograniczeniach entrez czy 1000 mozna ich zbombardowac
+# Embeddingi vs LLM co lepsze w przypadku quality score. 
+# ALama zainstalowac, albo api chata gpt tak zeby za drogo nie wyszlo np. 4.1, gemini zobacyzc czy na wersji pro nie ma darmowych
+# open router sprwadzic jako dostawca do wielu bramke LLM 
 
 
 # Luźne przemyślenia
@@ -132,3 +139,22 @@ df.to_excel('PubMed_resultsx.xlsx', index=False)
 
 
 '''
+
+
+'''
+Pretty XML
+
+with open("xml_text_1.xml", "w", encoding="utf-8") as f:
+    f.write(xml_data)
+import xml.dom.minidom
+
+dom = xml.dom.minidom.parseString(xml_data)
+
+pretty_xml = dom.toprettyxml()
+
+with open("pretty.xml", "w", encoding="utf-8") as f:
+    f.write(pretty_xml)
+
+'''
+
+

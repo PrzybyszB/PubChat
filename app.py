@@ -25,7 +25,7 @@ TABLE_NAME = "pubmed_articles_raw"
 query = '("Dietary Fiber"[MeSH Terms]) AND ("2020/01/01"[Date - Publication] : "3000"[Date - Publication])'
 
 
-def search_pubmed(query, retmax=10):
+def search_pubmed(query, retmax=20):
     '''Search PubMed and return list of PubMed IDs'''
 
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
@@ -116,13 +116,11 @@ def create_table():
 
         conn.execute(text(f"""
             CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
-
                 pubmed_id TEXT PRIMARY KEY,
                 title TEXT,
                 publication_type TEXT,
                 abstract TEXT,
                 year INTEGER
-
             )
         """))
 
@@ -140,26 +138,20 @@ def save_to_db(parsed_articles):
 
             result = conn.execute(text(f"""
                 INSERT INTO {TABLE_NAME} (
-
                     pubmed_id,
                     title,
                     publication_type,
                     abstract,
                     year
-
                 )
                 VALUES (
-
                     :pubmed_id,
                     :title,
                     :publication_type,
                     :abstract,
                     :year
-
                 )
-
                 ON CONFLICT (pubmed_id) DO NOTHING
-
             """), article)
 
             if result.rowcount > 0:
