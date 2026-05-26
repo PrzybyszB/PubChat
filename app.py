@@ -4,6 +4,7 @@ from Bio import Entrez
 import xml.etree.ElementTree as ET
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
@@ -74,6 +75,18 @@ def parse_articles(xml_data):
 
     articles = []
 
+
+    # Determination scroing for publication_type
+    SCORE_MAP = {
+        "Meta-Analysis": 5,
+        "Systematic Review": 4,
+        "Randomized Controlled Trial": 4,
+        "Review": 3,
+        "Journal Article": 1
+    }
+
+    CURRENT_YEAR = datetime.now().year
+
     for article in root.findall(".//PubmedArticle"):
         try:
             pmid = article.findtext(".//PMID")
@@ -86,6 +99,29 @@ def parse_articles(xml_data):
                 if p.text
             ]
 
+            # Looking for the highest tag, because its can be multiple publication-types
+            points_list = [SCORE_MAP.get(pt, 1) for pt in publication_types]
+            
+            type_score = max(points_list, default=1)
+
+            year_str = article.findtext(".//PubDate/Year")
+            year = int(year_str) if year_str else None
+
+
+            # Bonus points for publication yaer
+            year_bonus = 0
+            if year:
+                age = CURRENT_YEAR - year
+                if age <= 4:
+                    year_bonus = 2
+                elif age <= 7:
+                    year_bonus = 1
+                else:
+                    year_bonus = 0
+            
+            total_quality_score = type_score + year_bonus
+
+
             abstract = ""
             abstract_nodes = article.findall(".//AbstractText")
 
@@ -97,9 +133,10 @@ def parse_articles(xml_data):
             articles.append({
                 "pubmed_id": pmid,
                 "title": title,
-                "publication_type": publication_types,
+                "publication_type": ", ".join(publication_types),
                 "abstract": abstract,
-                "year": int(year) if year else None
+                "year": int(year) if year else None,
+                "quality_score": total_quality_score
 
             })
         except Exception:
@@ -120,7 +157,13 @@ def create_table():
                 title TEXT,
                 publication_type TEXT,
                 abstract TEXT,
-                year INTEGER
+                year INTEGER,
+                quality_score INTEGER,
+
+                llm_is_human BOOLEAN,
+                llm_sample_size INTEGER,
+                llm_final_score REAL,
+                llm_justification TEXT
             )
         """))
 
@@ -142,14 +185,16 @@ def save_to_db(parsed_articles):
                     title,
                     publication_type,
                     abstract,
-                    year
+                    year,
+                    quality_score
                 )
                 VALUES (
                     :pubmed_id,
                     :title,
                     :publication_type,
                     :abstract,
-                    :year
+                    :year,
+                    :quality_score
                 )
                 ON CONFLICT (pubmed_id) DO NOTHING
             """), article)
