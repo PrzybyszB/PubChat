@@ -1,17 +1,7 @@
 # TODO 
 
-# zobaczyć czemu nie działa llm_processor, czemu wywala błąd
-# dodac do tabeli quality score zeby byc defaultowo pusty
-# dac LLMowie do ogarniecia abstract zeby z niego wyciagnac czy było na ludziahc czy na zwierzetach i cos jeszce moze tam ogarnac ?
-# ustalic ten quality score
-# zobaczyc jak zrobic connection z dbeaverem i dockerowym postgresem
-
-# https://chatgpt.com/s/t_69f57cce07c08191a7945e3f1b2a6c4c
-# pobieram artykuły 100 co mnie interesuja dla sodium i fiber
-# astepnie oddaje stery llmowi zebymmi wyswietlil ich quality score
-# tworze ifem podliczenie i zapis do bazy danych jaki ma quality score
-
 # po stworzeniu quality score jazda z embedingiem (do embdeingow)
+# zobaczyc jak zrobic connection z dbeaverem i dockerowym postgresem
 
 # Do zbadania
 # Czy sprawdzamy outlinery ?

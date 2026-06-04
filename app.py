@@ -26,7 +26,7 @@ TABLE_NAME = "pubmed_articles_raw"
 query = '("Dietary Fiber"[MeSH Terms]) AND ("2020/01/01"[Date - Publication] : "3000"[Date - Publication])'
 
 
-def search_pubmed(query, retmax=20):
+def search_pubmed(query, retmax=30):
     '''Search PubMed and return list of PubMed IDs'''
 
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
@@ -160,10 +160,10 @@ def create_table():
                 year INTEGER,
                 quality_score INTEGER,
 
-                llm_is_human BOOLEAN,
-                llm_sample_size INTEGER,
+                llm_study_subject TEXT,
                 llm_final_score REAL,
-                llm_justification TEXT
+                llm_justification TEXT,
+                llm_population_score INTEGER
             )
         """))
 
@@ -213,16 +213,3 @@ def save_to_db(parsed_articles):
 
 result = save_to_db(parsed_article)
 print(result)
-
-
-
-'''
-Quality score 
-year, 
-journal, 
-study_type, <PublicationType> </PublicationType>
-population, 
-human vs animal_study
-
-
-'''
