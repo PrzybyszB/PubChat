@@ -107,7 +107,7 @@ def update_embedding(pubmed_id, embedding):
         conn.commit()
 
 
-def run_pipeline():
+def main():
 
     print(f"Starting embedding pipeline...")
 
@@ -118,7 +118,7 @@ def run_pipeline():
     total_processed = 0
 
     while True:
-        rows = fetch_articles( limit=batch_size)
+        rows = fetch_articles(limit=batch_size)
 
         if not rows:
             print(f"\nNo more articles.")
@@ -147,4 +147,4 @@ def run_pipeline():
 
 
 if __name__ == "__main__":
-    run_pipeline()
+    main()

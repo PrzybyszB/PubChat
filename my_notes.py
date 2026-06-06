@@ -1,22 +1,18 @@
 # TODO 
 
-# po stworzeniu quality score jazda z embedingiem (do embdeingow)
-# zobaczyc jak zrobic connection z dbeaverem i dockerowym postgresem
+# Zrobic system tylko dla fibre i sodium reszte olac, zoabczyc retriever i raport zeby dal te same ID. Zrobic Fast api do tego, zrobic tak zeby te wyszukiwania korzystały tylko z gold_qualitty df i zusunac te nieptorzebne kolumny tam jak flagi co jest high co jest low 
 
-# Do zbadania
-# Czy sprawdzamy outlinery ?
+# Ograniczyć sie do fiber i sodium tylko i zaznaczyc w pracy ze 
+# Poukładać to tak że jest detekcja problemu a pozniej dopiero retriieval czy jest high czy low, i na podstawie tego co retrieval dajemty raport
+# stworzyc pliik.py który bedzi ewyliczał do raport mediane, p90 i inne satystyki
 
-
-# Po sptkaniu 14.05
-# Poczytac o twardo ograniczeniach entrez czy 1000 mozna ich zbombardowac
-# Embeddingi vs LLM co lepsze w przypadku quality score. 
-# ALama zainstalowac, albo api chata gpt tak zeby za drogo nie wyszlo np. 4.1, gemini zobacyzc czy na wersji pro nie ma darmowych
-# open router sprwadzic jako dostawca do wielu bramke LLM 
+# usunąć low_fib high_sod, zostawic tylko mediane i p90, notebook ma byc tylko eksploracyjny
 
 
-# Luźne przemyślenia
-# DR1DRSTZ 4 oznacza diete oparta na mleku matki więc nalezalloby to usunąć w dalszych analizach
+# Połączyć to z fast api, zrobić 3 pola do wpisania. Składnik, rekomendowany, max i min. I na tej podstawie co sie wpisze, ma albo zrobic raport albo wypisac ze tego skladnika nie ma w bazie danych, prosze go uzupełnić
 
+# Pytanie do Ł. W
+# Zastanowić się nad rerank_articles czy retrieval score jest dobry 0.7 dla search i 0.3 dla quality score 
 
 '''
 # Opis kolumn DR1TOT_J https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/DR1TOT_J.htm#SEQN
@@ -149,3 +145,8 @@ with open("pretty.xml", "w", encoding="utf-8") as f:
 '''
 
 
+'''
+Jupyter notebook flagi 
+
+
+'''

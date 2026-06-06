@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 from datetime import datetime
+import time
 
 load_dotenv()
 
@@ -26,7 +27,7 @@ TABLE_NAME = "pubmed_articles_raw"
 query = '("Dietary Fiber"[MeSH Terms]) AND ("2020/01/01"[Date - Publication] : "3000"[Date - Publication])'
 
 
-def search_pubmed(query, retmax=30):
+def search_pubmed(query, retmax=1000):
     '''Search PubMed and return list of PubMed IDs'''
 
     url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
@@ -39,6 +40,8 @@ def search_pubmed(query, retmax=30):
     }
 
     res = requests.get(url,params=params)
+    res.raise_for_status()
+    
     data = res.json()
 
     ids = data["esearchresult"]["idlist"]
@@ -48,7 +51,10 @@ def search_pubmed(query, retmax=30):
 
     return ids
 
-ids = search_pubmed(query)
+def chunk_list(items, chunk_size):
+
+    for i in range(0, len(items), chunk_size):
+        yield items[i:i + chunk_size]
 
 def fetch_details(ids):
     """Fetch article details from PubMed in XML format"""
@@ -64,9 +70,10 @@ def fetch_details(ids):
 
     res = requests.get(url,params=params)
 
-    return res.text
+    print("Status:", res.status_code)
+    print("Length:", len(res.text))
 
-xml_data = fetch_details(ids)
+    return res.text
 
 def parse_articles(xml_data):
     """Parse PubMed XML and extract article metadata"""
@@ -139,13 +146,13 @@ def parse_articles(xml_data):
                 "quality_score": total_quality_score
 
             })
-        except Exception:
+        except Exception as e:
+
+            print(f"Error parsing PMID {pmid}")
+            print(str(e))
             continue
 
     return articles
-
-
-parsed_article = parse_articles(xml_data)
 
 def create_table():
 
@@ -161,15 +168,13 @@ def create_table():
                 quality_score INTEGER,
 
                 llm_study_subject TEXT,
-                llm_final_score REAL,
+                llm_final_score INTEGER,
                 llm_justification TEXT,
                 llm_population_score INTEGER
             )
         """))
 
         conn.commit()
-
-create_table()
 
 def save_to_db(parsed_articles):
 
@@ -211,5 +216,42 @@ def save_to_db(parsed_articles):
     }
 
 
-result = save_to_db(parsed_article)
-print(result)
+def main():
+
+    print("Starting PubMed ingestion pipeline...")
+
+    ids = search_pubmed(
+        query=query,
+        retmax=1000
+    )
+
+    print(f"Found IDs: {len(ids)}")
+
+    parsed_articles = []
+
+    for batch_ids in chunk_list(ids, 200):
+
+        xml_data = fetch_details(batch_ids)
+
+        articles = parse_articles(xml_data)
+
+        print(f"Batch returned {len(articles)} articles")
+
+        parsed_articles.extend(articles)
+
+        time.sleep(0.4)
+
+        print(
+            f"Collected articles: {len(parsed_articles)}")
+
+    print(
+        f"Parsed articles: {len(parsed_articles)}")
+
+    create_table()
+
+    result = save_to_db(parsed_articles)
+
+    print(result)
+
+if __name__ == "__main__":
+    main()

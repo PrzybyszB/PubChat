@@ -1,16 +1,11 @@
 import os
 import json
 from typing import Optional, List
-
 from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
 from sqlalchemy import create_engine, text
 
-
-# =========================================================
-# LOAD ENV
-# =========================================================
 
 load_dotenv()
 
@@ -22,46 +17,23 @@ POSTGRES_DB = os.getenv("POSTGRES_DB")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 
-
-# =========================================================
-# OPENAI CLIENT
-# =========================================================
-
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-
-# =========================================================
-# POSTGRES CONNECTION
-# =========================================================
-
-engine = create_engine(
-    f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@"
-    f"{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
-)
+engine = create_engine(f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}")
 
 
 TABLE_NAME = "pubmed_articles_raw"
 
-
-# =========================================================
-# PYDANTIC MODELS
-# =========================================================
 
 class ArticleForLLM(BaseModel):
     pubmed_id: str
     title: str
     abstract: str
 
-
 class ExtractedMetadata(BaseModel):
     pubmed_id: str
     study_subject: Optional[str]
     confidence_note: Optional[str]
-
-
-# =========================================================
-# SYSTEM PROMPT
-# =========================================================
 
 SYSTEM_PROMPT = """
 You extract metadata from scientific abstracts.
@@ -100,17 +72,13 @@ Return exactly:
 """
 
 
-# =========================================================
-# FETCH ARTICLES FROM POSTGRES
-# =========================================================
-
 def fetch_articles(limit: int) -> List[ArticleForLLM]:
 
     query = text(f"""
         SELECT
             pubmed_id,
             title,
-            abstract
+            abstract,
         FROM {TABLE_NAME}
         WHERE abstract IS NOT NULL
           AND abstract != ''
@@ -123,29 +91,13 @@ def fetch_articles(limit: int) -> List[ArticleForLLM]:
 
         result = conn.execute(query, {"limit": limit})
 
-        return [
-            ArticleForLLM(
-                pubmed_id=row.pubmed_id,
-                title=row.title,
-                abstract=row.abstract
-            )
-            for row in result
-        ]
+        return [ArticleForLLM(pubmed_id=row.pubmed_id, title=row.title, abstract=row.abstract) for row in result]
 
-
-# =========================================================
-# CREATE BATCHES
-# =========================================================
 
 def create_batches(data: List, batch_size: int):
 
     for i in range(0, len(data), batch_size):
         yield data[i:i + batch_size]
-
-
-# =========================================================
-# BUILD USER PROMPT
-# =========================================================
 
 def build_user_prompt(articles: List[ArticleForLLM]) -> str:
 
@@ -174,14 +126,7 @@ ABSTRACT:
 
     return content
 
-
-# =========================================================
-# CALL OPENAI
-# =========================================================
-
-def extract_metadata_with_llm(
-    articles: List[ArticleForLLM]
-) -> List[ExtractedMetadata]:
+def extract_metadata_with_llm(articles: List[ArticleForLLM]) -> List[ExtractedMetadata]:
 
     user_prompt = build_user_prompt(articles)
 
@@ -208,9 +153,7 @@ def extract_metadata_with_llm(
     print(parsed_json)
 
     if "metadata" not in parsed_json:
-        raise ValueError(
-            f"Missing 'metadata' key. Response: {raw_content}"
-        )
+        raise ValueError(f"Missing 'metadata' key. Response: {raw_content}")
 
     results = []
 
@@ -226,13 +169,7 @@ def extract_metadata_with_llm(
 
     return results
 
-# =========================================================
-# UPDATE POSTGRES
-# =========================================================
-
-def update_article_metadata(
-    results: List[ExtractedMetadata]
-):
+def update_article_metadata(results: List[ExtractedMetadata]):
 
     POPULATION_SCORE_MAP = {
         "human": 2,
@@ -244,18 +181,16 @@ def update_article_metadata(
         SET
             llm_study_subject = :llm_study_subject,
             llm_justification = :llm_justification,
-            llm_population_score = :llm_population_score 
+            llm_population_score = :llm_population_score,
+            llm_final_score = quality_score + :llm_population_score 
         WHERE pubmed_id = :pubmed_id
     """)
 
     with engine.connect() as conn:
 
         for item in results:
-            
-            population_bonus = POPULATION_SCORE_MAP.get(
-                item.study_subject,
-                0
-            )
+
+            population_bonus = POPULATION_SCORE_MAP.get(item.study_subject, 0)
             
             conn.execute(
                 query,
@@ -269,15 +204,11 @@ def update_article_metadata(
 
         conn.commit()
 
-# =========================================================
-# MAIN PIPELINE
-# =========================================================
-
-def run_pipeline():
+def main():
 
     print("Starting metadata extraction pipeline...\n")
 
-    batch_size = 5
+    batch_size = 20
 
     processed_count = 0
 
@@ -287,41 +218,27 @@ def run_pipeline():
 
         if not articles:
 
-            print(
-                f"\nNo more articles to process."
-            )
+            print(f"\nNo more articles to process.")
 
             break
 
-        print(
-            f"Fetched {len(articles)} unprocessed articles"
-        )
+        print(f"Fetched {len(articles)} unprocessed articles")
 
         try:
+            extracted = extract_metadata_with_llm(articles)
 
-            extracted = extract_metadata_with_llm(
-                articles
-            )
-
-            print(
-                f"LLM returned {len(extracted)} classifications"
-            )
+            print(f"LLM returned {len(extracted)} classifications")
 
             if len(extracted) != len(articles):
 
-                print(
-                    "[WARNING] Number of returned records "
-                    "differs from number of input articles."
-                )
+                print("[WARNING] Number of returned records differs from number of input articles.")
 
             update_article_metadata(extracted)
 
             processed_count += len(extracted)
 
             print(
-                f"Batch completed. "
-                f"Total processed: {processed_count}\n"
-            )
+                f"Batch completed. Total processed: {processed_count}\n")
 
         except Exception as e:
 
@@ -331,13 +248,7 @@ def run_pipeline():
             break
 
     print(
-        f"\nPipeline finished. "
-        f"Processed {processed_count} articles."
-    )
-
-# =========================================================
-# ENTRYPOINT
-# =========================================================
+        f"\nPipeline finished. Processed {processed_count} articles.")
 
 if __name__ == "__main__":
-    run_pipeline()
+    main()
