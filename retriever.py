@@ -69,7 +69,7 @@ def retrieve_candidates(query_text: str, top_k: int = 20):
             publication_type,
             quality_score,
             llm_study_subject,
-            llm_population_score,
+            llm_final_score,
 
             1 - (
                 embedding <=> CAST(:query_embedding AS vector)
@@ -78,6 +78,7 @@ def retrieve_candidates(query_text: str, top_k: int = 20):
         FROM {TABLE_NAME}
 
         WHERE embedding IS NOT NULL
+            AND llm_final_score IS NOT NULL
 
         ORDER BY embedding <=> CAST(:query_embedding AS vector)
 
@@ -98,7 +99,7 @@ def rerank_articles(candidates):
 
     for article in candidates:
 
-        normalized_quality = (article["quality_score"] / 9)
+        normalized_quality = (article["llm_final_score"] / 9)
 
         article["retrieval_score"] = (article["similarity"] * 0.7 + normalized_quality * 0.3)
 
@@ -131,7 +132,7 @@ if __name__ == "__main__":
 
         print(f"Similarity: {article['similarity']:.3f}")
 
-        print(f"Quality Score: {article['quality_score']}")
+        print(f"Final quality score: {article['llm_final_score']}")
 
         print(f"Final Score: {article['retrieval_score']:.3f}")
 

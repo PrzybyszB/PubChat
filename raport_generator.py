@@ -3,32 +3,11 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from retriever import retrieve_articles
+from retriever import retrieve_articles, QUERY_MAP
 
 load_dotenv()
 
 client = OpenAI(api_key = os.getenv("OPENAI_API_KEY"))
-
-QUERY_MAP = {
-
-    "low_fiber": {
-        "query": """
-        low dietary fiber intake
-        gut health
-        cardiovascular disease
-        metabolic health
-        """
-    },
-
-    "high_sodium": {
-        "query": """
-        excessive sodium intake
-        hypertension
-        cardiovascular disease
-        blood pressure
-        """
-    }
-}
 
 SYSTEM_PROMPT = """
 You are a public health nutrition analyst.
@@ -95,7 +74,7 @@ TITLE:
 {article["title"]}
 
 QUALITY SCORE:
-{article["quality_score"]}
+{article["llm_final_score"]}
 
 ABSTRACT:
 {article["abstract"]}

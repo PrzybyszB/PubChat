@@ -1,6 +1,10 @@
 # TODO 
 
+# Czy ja
+# zrobic ten quality score zeby liczyl po llm_quality_score
+
 # Zrobic system tylko dla fibre i sodium reszte olac, zoabczyc retriever i raport zeby dal te same ID. Zrobic Fast api do tego, zrobic tak zeby te wyszukiwania korzystały tylko z gold_qualitty df i zusunac te nieptorzebne kolumny tam jak flagi co jest high co jest low 
+
 
 # Ograniczyć sie do fiber i sodium tylko i zaznaczyc w pracy ze 
 # Poukładać to tak że jest detekcja problemu a pozniej dopiero retriieval czy jest high czy low, i na podstawie tego co retrieval dajemty raport

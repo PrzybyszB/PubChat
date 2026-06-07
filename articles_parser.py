@@ -24,8 +24,10 @@ engine = create_engine(f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTG
 
 TABLE_NAME = "pubmed_articles_raw"
 
-query = '("Dietary Fiber"[MeSH Terms]) AND ("2020/01/01"[Date - Publication] : "3000"[Date - Publication])'
-
+QUERIES = [
+    "Dietary Fiber",
+    "Sodium, Dietary"
+]
 
 def search_pubmed(query, retmax=1000):
     '''Search PubMed and return list of PubMed IDs'''
@@ -220,16 +222,34 @@ def main():
 
     print("Starting PubMed ingestion pipeline...")
 
-    ids = search_pubmed(
-        query=query,
-        retmax=1000
-    )
+    all_ids = []
 
-    print(f"Found IDs: {len(ids)}")
+    for mesh_term in QUERIES:
+
+        pubmed_query = f"""
+        ("{mesh_term}"[MeSH Terms])
+        AND ("Humans"[MeSH Terms])
+        AND ("2020/01/01"[Date - Publication] : "3000"[Date - Publication])
+        """
+
+        ids = search_pubmed(
+            query=pubmed_query,
+            retmax=1000
+        )
+
+        all_ids.extend(ids)
+
+        print(
+            f"{mesh_term}: {len(ids)} articles"
+        )
+
+    all_ids = list(dict.fromkeys(all_ids))
+
+    print(f"Found IDs: {len(all_ids)}")
 
     parsed_articles = []
 
-    for batch_ids in chunk_list(ids, 200):
+    for batch_ids in chunk_list(all_ids, 200):
 
         xml_data = fetch_details(batch_ids)
 
@@ -241,11 +261,9 @@ def main():
 
         time.sleep(0.4)
 
-        print(
-            f"Collected articles: {len(parsed_articles)}")
+        print(f"Collected articles: {len(parsed_articles)}")
 
-    print(
-        f"Parsed articles: {len(parsed_articles)}")
+    print(f"Parsed articles: {len(parsed_articles)}")
 
     create_table()
 

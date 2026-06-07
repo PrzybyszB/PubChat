@@ -33,7 +33,7 @@ class ArticleForLLM(BaseModel):
 class ExtractedMetadata(BaseModel):
     pubmed_id: str
     study_subject: Optional[str]
-    confidence_note: Optional[str]
+    llm_justification: Optional[str]
 
 SYSTEM_PROMPT = """
 You extract metadata from scientific abstracts.
@@ -78,7 +78,7 @@ def fetch_articles(limit: int) -> List[ArticleForLLM]:
         SELECT
             pubmed_id,
             title,
-            abstract,
+            abstract
         FROM {TABLE_NAME}
         WHERE abstract IS NOT NULL
           AND abstract != ''
@@ -94,10 +94,10 @@ def fetch_articles(limit: int) -> List[ArticleForLLM]:
         return [ArticleForLLM(pubmed_id=row.pubmed_id, title=row.title, abstract=row.abstract) for row in result]
 
 
-def create_batches(data: List, batch_size: int):
+# def create_batches(data: List, batch_size: int):
 
-    for i in range(0, len(data), batch_size):
-        yield data[i:i + batch_size]
+#     for i in range(0, len(data), batch_size):
+#         yield data[i:i + batch_size]
 
 def build_user_prompt(articles: List[ArticleForLLM]) -> str:
 
@@ -149,9 +149,7 @@ def extract_metadata_with_llm(articles: List[ArticleForLLM]) -> List[ExtractedMe
     raw_content = response.choices[0].message.content
 
     parsed_json = json.loads(raw_content)
-
-    print(parsed_json)
-
+    
     if "metadata" not in parsed_json:
         raise ValueError(f"Missing 'metadata' key. Response: {raw_content}")
 
@@ -204,6 +202,29 @@ def update_article_metadata(results: List[ExtractedMetadata]):
 
         conn.commit()
 
+def get_pipeline_stats():
+
+    query = text(f"""
+        SELECT
+            COUNT(*) AS total_articles,
+
+            COUNT(*) FILTER (
+                WHERE abstract IS NULL
+                   OR abstract = ''
+            ) AS no_abstract,
+
+            COUNT(*) FILTER (
+                WHERE llm_final_score IS NOT NULL
+            ) AS processed
+        FROM {TABLE_NAME}
+    """)
+
+    with engine.connect() as conn:
+
+        row = conn.execute(query).first()
+
+        return dict(row._mapping)
+
 def main():
 
     print("Starting metadata extraction pipeline...\n")
@@ -237,8 +258,7 @@ def main():
 
             processed_count += len(extracted)
 
-            print(
-                f"Batch completed. Total processed: {processed_count}\n")
+            print(f"Batch completed. Total processed: {processed_count}\n")
 
         except Exception as e:
 
@@ -247,8 +267,16 @@ def main():
 
             break
 
-    print(
-        f"\nPipeline finished. Processed {processed_count} articles.")
+    print(f"\nPipeline finished. Processed {processed_count} articles.")
+
+    stats = get_pipeline_stats()
+
+    print("\nPipeline statistics")
+    print(f"Total articles: {stats['total_articles']}")
+    print(f"Processed: {stats['processed']}")
+    print(f"Excluded (no abstract): {stats['no_abstract']}")
+
+
 
 if __name__ == "__main__":
     main()
