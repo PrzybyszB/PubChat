@@ -1,22 +1,14 @@
 # TODO 
 
-# Czy ja
-# zrobic ten quality score zeby liczyl po llm_quality_score
-
-# Zrobic system tylko dla fibre i sodium reszte olac, zoabczyc retriever i raport zeby dal te same ID. Zrobic Fast api do tego, zrobic tak zeby te wyszukiwania korzystały tylko z gold_qualitty df i zusunac te nieptorzebne kolumny tam jak flagi co jest high co jest low 
-
-
-# Ograniczyć sie do fiber i sodium tylko i zaznaczyc w pracy ze 
-# Poukładać to tak że jest detekcja problemu a pozniej dopiero retriieval czy jest high czy low, i na podstawie tego co retrieval dajemty raport
-# stworzyc pliik.py który bedzi ewyliczał do raport mediane, p90 i inne satystyki
-
+# zobaczyc czy to co pluje sztuczniak ma sens. te dowody naukowe troche pierdoli trzy po trzy
+# Query map jaki powinine byc czy ustawiony dla deficcency i excess dla obydwu wartosci czy nie ? 
 # usunąć low_fib high_sod, zostawic tylko mediane i p90, notebook ma byc tylko eksploracyjny
-
-
-# Połączyć to z fast api, zrobić 3 pola do wpisania. Składnik, rekomendowany, max i min. I na tej podstawie co sie wpisze, ma albo zrobic raport albo wypisac ze tego skladnika nie ma w bazie danych, prosze go uzupełnić
+# Dodać komenmtarze do funkcjonaności
+# uporządkować kod cały i architekture jakos podzielic na foldery  zoabczyc co jest niepotrzebne 
 
 # Pytanie do Ł. W
 # Zastanowić się nad rerank_articles czy retrieval score jest dobry 0.7 dla search i 0.3 dla quality score 
+# Ile artykułów robic top ? aktualnie jest top3
 
 '''
 # Opis kolumn DR1TOT_J https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/DR1TOT_J.htm#SEQN

@@ -27,26 +27,22 @@ TABLE_NAME = "pubmed_articles_raw"
 
 QUERY_MAP = {
 
-    "low_fiber": {
+    "fiber_deficiency": {
         "query": """
         low dietary fiber intake
-        fiber deficiency
         gut health
         cardiovascular disease
         metabolic health
-        """,
-        "nutrient": "Dietary Fiber"
+        """
     },
 
-    "high_sodium": {
+    "sodium_excess": {
         "query": """
         excessive sodium intake
         hypertension
-        blood pressure
         cardiovascular disease
-        public health
-        """,
-        "nutrient": "Sodium"
+        blood pressure
+        """
     }
 }
 

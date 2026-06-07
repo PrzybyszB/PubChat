@@ -1,8 +1,6 @@
 import os
-
 from dotenv import load_dotenv
 from openai import OpenAI
-
 from retriever import retrieve_articles, QUERY_MAP
 
 load_dotenv()
@@ -34,16 +32,16 @@ Structure:
 4. Recommendation
 """
 
-def build_context(nutrient_name, recommendation, median_value, p90_value, pct_low, pct_normal, pct_high,articles):
+def build_context(nutrient_name, mean_value, median_value, p90_value, pct_low, pct_normal, pct_high,articles):
 
     context = f"""
 NUTRIENT:
 {nutrient_name}
 
-RECOMMENDATION:
-{recommendation}
-
 POPULATION STATISTICS
+
+Mean_value:
+{mean_value}
 
 Median intake:
 {median_value}
@@ -83,11 +81,9 @@ ABSTRACT:
 
     return context
     
-def generate_report(nutrient_name, recommendation, median_value, p90_value, pct_low, pct_normal, pct_high, query_text):
+def generate_report(nutrient_name, median_value, mean_value, p90_value, pct_low, pct_normal, pct_high, articles):
 
-    articles = retrieve_articles(query_text = query_text, final_top_k= 3)
-
-    context = build_context( nutrient_name=nutrient_name, recommendation=recommendation, median_value=median_value, p90_value=p90_value, pct_low=pct_low, pct_normal=pct_normal, pct_high=pct_high, articles=articles)
+    context = build_context(nutrient_name=nutrient_name, median_value=median_value, mean_value=mean_value, p90_value=p90_value, pct_low=pct_low, pct_normal=pct_normal, pct_high=pct_high, articles=articles)
 
 
     response = client.chat.completions.create(
@@ -124,7 +120,6 @@ if __name__ == "__main__":
 
     report = generate_report(
         nutrient_name="Dietary Fiber",
-        recommendation=28,
 
         median_value=14.2,
         p90_value=27.5,
