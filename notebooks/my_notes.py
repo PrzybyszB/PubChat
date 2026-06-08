@@ -1,14 +1,14 @@
 # TODO 
 
-# zobaczyc czy to co pluje sztuczniak ma sens. te dowody naukowe troche pierdoli trzy po trzy
+
 # Query map jaki powinine byc czy ustawiony dla deficcency i excess dla obydwu wartosci czy nie ? 
-# usunąć low_fib high_sod, zostawic tylko mediane i p90, notebook ma byc tylko eksploracyjny
-# Dodać komenmtarze do funkcjonaności
-# uporządkować kod cały i architekture jakos podzielic na foldery  zoabczyc co jest niepotrzebne 
+
+
 
 # Pytanie do Ł. W
 # Zastanowić się nad rerank_articles czy retrieval score jest dobry 0.7 dla search i 0.3 dla quality score 
 # Ile artykułów robic top ? aktualnie jest top3
+# Czy to wszystko jest przejrzyste i udało się odpalić ? 
 
 '''
 # Opis kolumn DR1TOT_J https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/DR1TOT_J.htm#SEQN

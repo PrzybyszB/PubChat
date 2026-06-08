@@ -46,7 +46,7 @@ def add_vector():
         print("Embedding column verified.")
 
 def fetch_articles(limit=20):
-    '''Fetch articles where embedding is NULL'''
+    '''Generate embeddings only for articles that have not yet been processed'''
 
     query = text(f"""
             SELECT pubmed_id,
@@ -69,7 +69,7 @@ def fetch_articles(limit=20):
     
 
 def build_embedding_text(row):
-    '''Create a text that is returned to OpenAI'''
+    '''Embeddings are generated from both title and abstract to maximize semantic retrieval quality'''
 
     return f"""
 Title:

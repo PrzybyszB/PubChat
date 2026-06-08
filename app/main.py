@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from models import ReportRequest
-from statistics_engine import calculate_statistics, engine
-from retriever import retrieve_articles
-from raport_generator import generate_report
-from retriever import QUERY_MAP
+from app.models import ReportRequest
+from app.services.statistics_engine import calculate_statistics, engine
+from app.services.retriever import retrieve_articles
+from app.services.raport_generator import generate_report
+from app.services.retriever import QUERY_MAP
 
 app = FastAPI()
 
@@ -17,6 +17,7 @@ def generate_report_endpoint(request: ReportRequest):
         engine = engine
     )
 
+    # Select retrieval query based on nutrient and detected population problem
     query_key = (f"{request.nutrient}_{stats.problem}")
 
     query_text = QUERY_MAP[query_key]["query"]

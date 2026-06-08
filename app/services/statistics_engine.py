@@ -1,11 +1,12 @@
 import pandas as pd
 from sqlalchemy import create_engine
-from models import StatisticsResult
+from app.models import StatisticsResult
 
 engine = create_engine(
     "postgresql://postgres:postgres@localhost:5432/diploma_db"
 )
 
+# Mapping between user-facing nutrient names and NHANES dietary intake columns
 NUTRIENT_COLUMNS = {
     "fiber": "DR1TFIBE",
     "sodium": "DR1TSODI"
@@ -35,6 +36,7 @@ def calculate_statistics(nutrient: str, min_value: float, max_value: float, engi
     pct_high = ((values > max_value).sum()/ total)* 100
     pct_normal = (((values >= min_value) & (values <= max_value)).sum()/ total)* 100
 
+    # Determine dominant population issue
     problem= ("deficiency" if pct_low > pct_high else "excess")
 
     return StatisticsResult(

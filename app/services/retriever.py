@@ -54,7 +54,7 @@ def generate_query_embedding(query_text: str):
     return response.data[0].embedding
 
 def retrieve_candidates(query_text: str, top_k: int = 20):
-
+    '''Pgvector cosine distance is converted to similarity score'''
     query_embedding = generate_query_embedding(query_text)
 
     query = text(f"""
@@ -97,6 +97,7 @@ def rerank_articles(candidates):
 
         normalized_quality = (article["llm_final_score"] / 9)
 
+        # Final ranking combines semantic similarity and article quality on the specific weight
         article["retrieval_score"] = (article["similarity"] * 0.7 + normalized_quality * 0.3)
 
     return sorted(

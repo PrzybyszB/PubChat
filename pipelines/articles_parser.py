@@ -85,7 +85,7 @@ def parse_articles(xml_data):
     articles = []
 
 
-    # Determination scroing for publication_type
+    # Determination scroing for publication_type. Meta-analysis and systematic reviews receive higher scores than standard journal article
     SCORE_MAP = {
         "Meta-Analysis": 5,
         "Systematic Review": 4,
@@ -117,7 +117,7 @@ def parse_articles(xml_data):
             year = int(year_str) if year_str else None
 
 
-            # Bonus points for publication yaer
+            # Bonus points for publication yaer, to prioritize current evidence
             year_bonus = 0
             if year:
                 age = CURRENT_YEAR - year
@@ -226,6 +226,7 @@ def main():
 
     for mesh_term in QUERIES:
 
+        # Retrieve recent human studies related to predefined nutrients. The date filter limit the knowledge base to contemporary evidence
         pubmed_query = f"""
         ("{mesh_term}"[MeSH Terms])
         AND ("Humans"[MeSH Terms])

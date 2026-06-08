@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
-from retriever import retrieve_articles, QUERY_MAP
+from app.services.retriever import retrieve_articles, QUERY_MAP
 
 load_dotenv()
 

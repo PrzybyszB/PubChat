@@ -74,6 +74,7 @@ Return exactly:
 
 def fetch_articles(limit: int) -> List[ArticleForLLM]:
 
+    # Articles without abstracts are excluded because LLM classification requires textual context
     query = text(f"""
         SELECT
             pubmed_id,
@@ -169,6 +170,7 @@ def extract_metadata_with_llm(articles: List[ArticleForLLM]) -> List[ExtractedMe
 
 def update_article_metadata(results: List[ExtractedMetadata]):
 
+    # Human studies are prioritized over animal-only evidence
     POPULATION_SCORE_MAP = {
         "human": 2,
         "animal": 1,
