@@ -1,0 +1,19 @@
+# Wybrana metoda statystyczna
+
+## Metoda 1 {#sec-metoda1}
+
+TEKST
+
+Wzory w tekście wstawiamy z wykorzystanie pojedyńczego znaku dolara: $y=ax+b$, natomiast jak chcemy go wycentrować to wtedy używany jest podwójny.
+
+$$c^2=a^2+b^2$$ {#eq-pitagoras}
+
+@eq-pitagoras stanowi podstawę współczesnej matematyki.
+
+TEKST
+
+## Metoda 2
+
+W podrozdziale [-@sec-metoda1] przedstawiono pierwszą wersję, notomiast w tym podrozdziale znajdzie się opis jej ulepszenia. Jeżeli nie chcemy wstawiać prefiksu razem z odsyłaczem to poprzedzamy go znakiem minusa.
+
+TEKST

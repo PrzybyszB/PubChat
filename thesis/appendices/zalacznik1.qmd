@@ -1,0 +1,6 @@
+# Kod wykorzystany w analizie {.appendix}
+
+```{.python}
+
+# kod
+```

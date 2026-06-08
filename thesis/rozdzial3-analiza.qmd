@@ -1,0 +1,34 @@
+# Przeprowadzona analiza
+
+```{.python}
+#kod
+```
+
+## Przygotowanie danych
+
+TEKST
+
+```{.python}
+#kod
+```
+
+
+TEKST
+
+## Zastosowanie algorytmu
+
+W tym miejscu zastosujemy metodę opisaną w podrozdziale [-@sec-metoda1].
+
+TEKST
+
+## Rezultaty
+
+TEKST
+
+Wykres rozrzutu przedstawiający wynagrodzenie przedstawia @fig-wynagrodzenie.
+
+```{.python}
+# kod
+```
+
+Tekst
