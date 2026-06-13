@@ -1,1 +1,11 @@
 # Wstęp
+Celem pracy jest zaprojektowanie i implementacja systemu wspomagania analizy składników odżywczych na poziomie populacyjnym z wykorzystaniem metod Retrieval-Augmented Generation (RAG), dużych modeli językowych oraz literatury naukowej pozyskiwanej z bazy PubMed. Opracowany system umożliwia identyfikację niedoborów i nadmiarów wybranych składników odżywczych na podstawie danych żywieniowych, automatyczne wyszukiwanie powiązanych publikacji naukowych oraz generowanie raportów wspierających proces podejmowania decyzji przez analityków zdrowia publicznego i żywienia. W ramach pracy zaprojektowano architekturę obejmującą pozyskiwanie i przetwarzanie danych naukowych, budowę bazy wiedzy wykorzystującej wyszukiwanie semantyczne oraz generowanie raportów opartych na danych statystycznych i aktualnych dowodach naukowych.
+
+Zakres pracy obejmuje:
+* analizę możliwości wykorzystania metod Retrieval-Augmented Generation w obszarze zdrowia publicznego
+* opracowanie procesu pozyskiwania i przetwarzania publikacji naukowych z PubMed
+* budowę bazy i wiedzy wykorzystującej reprezentacje wektorowe artykułów naukowych
+* implementację mechanizmu wyszukiwania i rankingu publikacji
+* implementację modułu analizy danych żywieniowych
+* implementację aplikacji umożliwiającej generowanie raportów wspomagających ocenę spożycia składników odżywczych
+* weryfikację działania systemu na przykładzie danych NHANES
