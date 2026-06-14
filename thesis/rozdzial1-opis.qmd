@@ -1,6 +1,5 @@
-# Charakterystyka problemu oraz danych
+# Zdrowie publiczne i żywienie
 
-## Wprowadzenie do problematyki zdrowia publicznego i żywienia
 Odżywianie jest nieodłącznym elementem życia. Człowiek musi jeść by przeżyć. Wraz z pokarmem, człowiek powinien dostarczać odpowiedniej ilości energii oraz składników odżywczych. Jest to niezbędne do prawidłowego funkcjonowania procesów biologicznych, utrzymania sprawności organizmu oraz zmniejszania ryzyka występowania wielu chorób przewlekłych. Zarówno niedobory, jak i nadmiary składników odżywczych mogą prowadzić do negatywnych konsekwencji zdrowotnych, które często ujawniają się po wielu latach.
 
 Współczesne społeczeństwa mają dostęp do coraz większej ilości informacji dotyczących zdrowego stylu życia oraz zasad prawidłowego żywienia. Pomimo tego nieprawidłowe nawyki żywieniowe nadal pozostają istotnym problemem zdrowia publicznego. Niewłaściwa dieta jest uznawana za jeden z czynników ryzyka wielu schorzeń, takich jak choroby układu krążenia, cukrzycy typu 2, nadciśnienia tętnicze czy otyłość. Z tego względu monitorowanie sposobu żywienia społeczeństwa stanowi ważny element działań podejmowanych przez instytucje zajmujące się zdrowiem publicznym.
@@ -10,6 +9,7 @@ Ocena stanu odżywiania populacji wymaga gromadzenia oraz analizy dużych ilośc
 Wraz ze wzrostem ilości dostępnych danych rośnie znaczenie narzędzi informatycznych wspomagających proces ich analizy. Nowoczesne metody analizy danych umożliwiają identyfikację trendów żywieniowych, wykrywanie nieprawidłowości oraz wspieranie ekspertów w procesie podejmowania decyzji. Szczególnego znaczenia nabierają rozwiązania wykorzystujące sztuczną inteligencję oraz automatyczne przetwarzanie informacji naukowej, które mogą przyspieszyć interpretację wyników i ułatwić dostęp do aktualnej wiedzy medycznej.
 
 ## Problem badawczy
+
 Pomimo dostępności dużych zbiorów danych żywieniowych oraz obszernej literatury naukowej, proces identyfikacji problemów żywieniowych i ich interpretacji nadal wymaga znacznego nakładu pracy ekspertów. Analitycy zdrowia publicznego oraz specjaliści z zakresu żywienia muszą nie tylko analizować dane dotyczące spożycia składników odżywczych, ale również interpretować wyniki w kontekście aktualnej wiedzy naukowej. W praktyce oznacza to konieczność równoczesnej pracy z danymi statystycznymi oraz przeglądania licznych publikacji naukowych.
 
 Analiza dużych zbiorów danych populacyjnych pozwala na identyfikację niedoborów i nadmiarów składników odżywczych występujących w określonych grupach społecznych. Samo wykrycie problemu nie jest jednak wystarczające do sformułowania wniosków oraz rekomendacji. Konieczne jest również odniesienie wyników do aktualnych badań naukowych opisujących potencjalne skutki zdrowotne obserwowanych zjawisk. Proces ten jest czasochłonny i wymaga specjalistycznej wiedzy zarówno z zakresu żywienia, jak i wyszukiwania oraz oceny jakości literatury naukowej.
@@ -22,6 +22,7 @@ W związku z przedstawionymi wyzwaniami sformułowano następujące pytanie bada
 **W jaki sposób można wykorzystać architekturę Retrieval-Augmented Generation do wspomagania analizy spożycia składników odżywczych oraz generowania raportów opartych na danych żywieniowych i literaturze naukowej?**
 
 ## Cel i zakres pracy
+
 Celem niniejszej pracy jest zaprojektowanie oraz implementacja systemu wspomagania analizy spożycia składników odżywczych z wykorzystaniem metod Retrieval-Augmented Generation. Opracowane rozwiązanie ma wspierać analityków zdrowia publicznego w identyfikacji niedoborów i nadmiarów składników odżywczych występujących w badanej populacji oraz dostarczać informacje oparte na aktualnej literaturze naukowej.
 
 W ramach pracy opracowano system umożliwiający analizę danych żywieniowych, automatyczne wykrywanie problemów związanych ze spożyciem wybranych składników odżywczych oraz generowanie raportów wspomagających proces interpretacji wyników. Generowane raporty łączą informacje pochodzące z analizowanego zbioru danych z wiedzą pozyskiwaną z publikacji naukowych.
@@ -34,101 +35,166 @@ Praca koncentruje się na demonstracji możliwości wykorzystania metod Retrieva
 
 ## Charakterystyka zbioru NHANES
 
-### Charakterystyka badania NHANES
 NHANES (National Health and Nutrition Examination Survey) to ogólnokrajowe badanie zdrowia i stanu odżywiania populacji prowadzone w Stanach Zjednoczonych. Program jest realizowany przez national Center for Health Statistics, będąc częścią Centers for Disease Control and Prevention (CDC). Badanie zostało uruchomione na poczatku lat 60. XX wieku, natomiast od 1999 roku jest prowadzone w sposób ciągły. Głównym celem NHANES jest monitorowanie stanu zdrowia społeczeństwa amerykańskiego. NHANES łączy dane pochodzące z wywiadów ankietowych, badań lekarskich oraz analiz laboratoryjnych. Zbierane są informacje dotyczące miedzy innymi demografii, sposobu odżywiania, aktywności fizycznej i występowania chorób. Badanie obejmuje reprezentatywną próbe mieszkańców Stanów Zjednoczonych. Dzięki temu uzyskane wyniki mogą być uogólniane na całą populacje kraju. NHANES wyróżnia się wysoką jakością danych oraz standaryzacja procesu ich zbierania. Z tego względu jest jednym z najczęściej wykorzystywanych źródeł danych w badaniach epidemiologicznych, medycznych i z zakresu zdrowia publicznego.
 
-### Wykorzystane źródła danych
-W ramach projektu wykorzystano dwa zbiory danych pochodzace z cyku NHANES 2017-2018:
-* DEMO_J
-* DR1TOT_J
+W ramach projektu wykorzystano dwa zbiory danych pochodzace z cyku NHANES 2017-2018: 
+  
+* DEMO_J   
+* DR1TOT_J   
 
 Tabela DEMO_J zawiera informacje demograficzne dotyczące uczestników badania, takie jak wiek oraz płeć. Z kolei tabela DR1TOT_J zawiera dane dotyczące spożycia składników odżywczych uzyskane na podstawie pierwszego 24-godzinnego wywiadu żywieniowego (Day 1 Total Nutrient Intakes). Połączenie obu zbiorów umożliwia analizę spożycia składników odżywczych w kontekście cech demogrficznych badanej populcji.
 
-### Charakterystyka zamienych wykorzystanych w projekcie 
 W projekcie wykorzystno wybrne zmienne niezbędne do przeprowdzeni nliz żywieniowych oraz budowy systemu wspomagania decyzji.
-* SEQN - unikalny identyfikator uczestnika badania
-* RIAGENDR - płeć uczestnika
-* RIDAGEYR - wiek uczestnika w latach
-* DR1DRSTZ - status wiarygodności wywiadu żywieniowego
-* DR1MRESP - osoba odpowiadająca na pytania ankietowe
-* DR1HELP - informacja o pomocy udzielanej podczas wywiadu
-* DR1TKCAL - dzienne spożycie energii [kcal]
-* DR1TFIBE - dzienne spożycie błonnika (g)
-* DR1TSODI - dziennie spożycie sodu (mg)
+
+* SEQN - unikalny identyfikator uczestnika badania   
+* RIAGENDR - płeć uczestnika   
+* RIDAGEYR - wiek uczestnika w latach   
+* DR1DRSTZ - status wiarygodności wywiadu żywieniowego   
+* DR1MRESP - osoba odpowiadająca na pytania ankietowe   
+* DR1HELP - informacja o pomocy udzielanej podczas wywiadu   
+* DR1TKCAL - dzienne spożycie energii [kcal]   
+* DR1TFIBE - dzienne spożycie błonnika (g)   
+* DR1TSODI - dziennie spożycie sodu (mg)   
 
 Przedstawione zmienne zostały wykorzystane podczas przygotowania danych oraz dalszej analizy spożycia składników odżywczych.
 
-### Charakterystyka końcowego zbioru danych
-Oba zbiory danych zostały połączone przy wykorzystaniu identyfikatora uczestnika SEQN. W wyniku połączenia uzyskano zbiór zawierający 8704 obserwacje. Każda obserwacja reprezentuje pojedynczego uczestnika badania.
+Oba zbiory danych zostały połączone przy wykorzystaniu identyfikatora uczestnika SEQN. W wyniku połączenia uzyskano zbiór zawierający 8704 obserwacje. Każda obserwacja reprezentuje pojedynczego uczestnika badania. Otrzymany zbiór stanowi podstawę dalszych etapów przetwarzania danych, tworzenia zmiennych pomocniczych oraz analiz przedstawionych w kolejnych częściach pracy.
 
-Otrzymany zbiór stanowi podstawę dalszych etapów przetwarzania danych, tworzenia zmiennych pomocniczych oraz analiz przedstawionych w kolejnych częściach pracy.
-
-### Uzasadnienie wyboru danych
 Zbiór NHANES został wybrany ze względu na wysoką jakość danych, szeroki zakres gromadzonych informacji oraz powszechne wykorzystanie w badaniach naukowych. Dane zawierają szczegółowe informacje dotyczące spożycia składników odżywczych, co umożliwia przeprowadzenie analiz związanych z identyfikacją niedoborów i nadmiarów żywieniowych.
 
 Dodatkową zaletą jest możliwość łączenia informacji pochodzących z różnych modułów badania przy wykorzystaniu wspólnego identyfikatora uczestnika. Pozwala to na tworzenie bardziej kompleksowych zbiorów danych oraz rozszerzenie analiz o kolejne aspekty zdrowia i zywienia w przyszłych etapach rozjowu systemu.
 
 ## Przygotowanie danych
 
-### Weryfikacja jakości danych
-Przed rozpoczęciem analizy przeprowadzono kontrolę jakości danych. Zweryfikowano występowanie zduplikowanych rekordów oraz brakujących wartości.
+Przed rozpoczęciem analizy przeprowadzono kontrolę jakości danych. Zweryfikowano występowanie zduplikowanych rekordów oraz brakujących wartości. Nie wykryto zduplikowanych obserwacji w żadnym z analizowanych zbiorów danych. Przeprowadzona analiza brakujących wartości wykazała ich zgodność z dokumentacją NHANES. Występujące braki wynikały ze sposobu projektowania badania oraz logiki ankiety, a nie z błędów podczas gromadzenia danych.
 
-```{.python}
-day_1.duplicated().sum()
-demo.duplicated().sum() 
+W pierwszym etapie przygotowania danych połączono tabele DEMO_J oraz DR1TOT_J. Obie tabele zawierają wspólny identyfikator uczestnika badania oznaczony jako SEQN, który został wykorzystany jako klucz łączenia. W wyniku połaczenia uzyskano zbiór zawierający 8704 obserwacje oraz 11 zmiennych.
 
-day_1.isnull().sum()
-demo.isnull().sum()
-```
-Nie wykryto zduplikowanych obserwacji w żadnym z analizowanych zbiorów danych. Przeprowadzona analiza brakujących wartości wykazała ich zgodność z dokumentacją NHANES. Występujące braki wynikały ze sposobu projektowania badania oraz logiki ankiety, a nie z błędów podczas gromadzenia danych.
+Na potrzeby dalszej analizy utworzono zmienną pomocniczą umożliwiającą klasyfikację uczestników badania ze względu na deklarowane dzienne spożycie energii. Celem było zidentyfikowanie obserwacji charakteryzujących się skrajnie niską lub skrajnie wysoką kalorycznością, które mogłyby wpływać na wyniki dalszych analiz. Na potrzeby projektu przyjęto zakres od 800 do 5500 kcal jako przedział reprezentujący typowe dzienne spożycie energii. Obserwacje znajdujące się poza tym zakresem zostały oznaczone jako potencjalnie niereprezentatywne i wykorzystane w dalszym procesie filtrowania danych.
 
-### Łączenie zbiorów danych
-W pierwszym etapie przygotowania danych połączono tabele DEMO_J oraz DR1TOT_J. Obie tabele zawierają wspólny identyfikator uczestnika badania oznaczony jako SEQN, który został wykorzystany jako klucz łączenia.
+W celu zwiększenia wiarygodności analiz utworzono dodatkowy filtr jakości danych. Pozostawiono wyłącznie obserwacje spełniające określone kryteria jakościowe. Do dalszej analizy zakwalifikowano uczestników, których wywiad żywieniowy został oznaczony jako wiarygodny przez NHANES, którzy samodzielnie odpowiadali na pytania lub odpowiadali za żywienie gospodarstwa domowego oraz nie wymagali pomocy podczas udzielania odpowiedzi. Dodatkowo odrzucono obserwacje o skrajnie niskiej lub wysokiej deklarowanej podaży energii. Na potrzeby projektu przyjęto zakres od 800 do 5500 kcal jako przedział reprezentujący typowe dzienne spożycie energii. Z analizy wykluczono również niemowlęta i dzieci do ukończenia 2. roku życia. W ramach pracy przyjęto osoby w wieku powyżej 2 lat, ponieważ sposób żywienia najmłodszych dzieci istotnie różni się od pozostałych grup wiekowych i wymaga odrębnych kryteriów oceny. Końcowy zbiór analityczny został zapisany w tabeli nhanes_gold i stanowi źródło danych wykorzystywane przez moduł analizy statystycznej systemu.
 
-```{.python}
-silver_df = silver_day_1.merge(silver_demo, on="SEQN", how="left")
-```
-W wyniku połaczenia uzyskano zbiór zawierający 8704 obserwacje oraz 11 zmiennych.
-
-### Przygotowanie zmiennych pomocniczych
-Na potrzeby dalszej analizy utworzono zmienną pomocniczą umożliwiającą klasyfikację uczestników badania ze względu na deklarowane dzienne spożycie energii. Celem było zidentyfikowanie obserwacji charakteryzujących się skrajnie niską lub skrajnie wysoką kalorycznością, które mogłyby wpływać na wyniki dalszych analiz.
-
-```{.python}
-silver_df.loc[silver_df["DR1TKCAL"] < 800, "kcal_flag"] = "low_kcal"
-
-silver_df.loc[
-    (silver_df["DR1TKCAL"] >= 800) & (silver_df["DR1TKCAL"] <= 5500),
-    "kcal_flag"
-] = "normal_kcal"
-
-silver_df.loc[silver_df["DR1TKCAL"] > 5500, "kcal_flag"] = "high_kcal"
-```
-Na potrzeby projektu przyjęto zakres od 800 do 5500 kcal jako przedział reprezentujący typowe dzienne spożycie energii. Obserwacje znajdujące się poza tym zakresem zostały oznaczone jako potencjalnie niereprezentatywne i wykorzystane w dalszym procesie filtrowania danych.
-
-### Filtr przygotowujący najbardziej wiarygodne dane
-W celu zwiększenia wiarygodności analiz utworzono dodatkowy filtr jakości danych. Pozostawiono wyłącznie obserwacje spełniające określone kryteria jakościowe.
-
-Do dalszej analizy zakwalifikowano uczestników, których wywiad żywieniowy został oznaczony jako wiarygodny przez NHANES, którzy samodzielnie odpowiadali na pytania lub odpowiadali za żywienie gospodarstwa domowego oraz nie wymagali pomocy podczas udzielania odpowiedzi.
-
-Dodatkowo odrzucono obserwacje o skrajnie niskiej lub wysokiej deklarowanej podaży energii. Na potrzeby projektu przyjęto zakres od 800 do 5500 kcal jako przedział reprezentujący typowe dzienne spożycie energii.
-
-### Budowa końcowego zbioru analitycznego
-Powstanie tabeli wykorzystywanej przez system,
-```{.python}
-gold_df = quality_silver_data.copy()
-
-gold_df.to_sql(
-    "nhanes_gold",
-    engine,
-    index=False,
-    if_exists="replace"
-)
-```
-Końcowy zbiór analityczny został zapisany w tabeli nhanes_gold i stanowi źródło danych wykorzystywane prez moduł analizy statystycznej systemu
-
-### Podsumowanie procesu przygotowania
 Proces przygotowania danych obejmował integrację danych demograficznych i żywieniowych, kontrolę jakości danych, filtrowanie obserwacji oraz utworzenie zmiennych pomocniczych wykorzystywanych przez system. W wyniku przeprowadzonych operacji utworzono końcowy zbiór analityczny stanowiący podstawę dalszych analiz oraz działania opracowanego rozwiązania.
 
 ## Ekspolaryjna analiza danych
 
+Po przygotowaniu końcowego zbioru analitycznego przeprowadzono eksploracyjną analizę danych. Jej celem było poznanie podstawowych cech analizowanej populacji oraz identyfikacja protencjalnych problemów żywieniowych związanych ze spozyciem błonnika i sodu.
 
+W pierwszej kolejności przeanalizowałems trukturę demograficzną uczestników badania 
+
+```{python}
+#| echo: false
+#| label: fig-age-distribution
+#| fig-cap: "Struktura wiekowa respondentów w badaniu NHANES"
+
+import pandas as pd
+from sqlalchemy import create_engine
+import matplotlib.pyplot as plt
+
+engine = create_engine(
+    "postgresql://postgres:postgres@localhost:5432/diploma_db"
+)
+
+gold_df = pd.read_sql("SELECT * FROM nhanes_gold", engine)
+
+age_order = ["3-19", "20-39", "40-65", "65+"]
+
+age_dist = (
+    gold_df[gold_df["age_group"] != "0-2"]["age_group"]
+    .value_counts()
+    .reindex(age_order)
+)
+
+age_dist.plot(kind="bar")
+
+plt.title("Age Distribution")
+plt.xlabel("Age Group")
+plt.ylabel("Count")
+plt.xticks(rotation=0)
+
+plt.show()
+
+```
+
+Po przygotowaniu końcowego zbioru analitycznego przeprowadzono analizę spożycia błonnika pokarmowego. W pierwszej kolejności obliczono podstawowe statystyki opisowe. W celu lepszej wizualizacji rozkładu spożycia błonnika przygotowano tabelę z wynikami.
+```{python}
+#| echo: false
+#| label: fig-fiber-table
+#| fig-cap: "Wyniki analizy spożycia błonnika"
+engine = create_engine(
+    "postgresql://postgres:postgres@localhost:5432/diploma_db"
+)
+
+gold_stats = pd.read_sql(
+    "SELECT * FROM gold_stats",
+    engine
+)
+
+fiber_table = pd.DataFrame({
+    "Miara": [
+        "Mediana [g]",
+        "90 percentyl [g]",
+        "Niedobór [%]",
+        "Norma [%]",
+        "Nadmiar [%]"
+    ],
+    "Wartość": [
+        gold_stats.loc[0, "median_fiber_g"],
+        gold_stats.loc[0, "p90_fiber_g"],
+        gold_stats.loc[0, "pct_low_fiber"],
+        gold_stats.loc[0, "pct_normal_fiber"],
+        gold_stats.loc[0, "pct_high_fiber"]
+    ]
+})
+
+fiber_table
+```
+
+Mediana spożycia błonnika wyniosła 14,3g dziennie, co oznacza, że połowa uczestników badania spożywała mniej niż tę wartość. Dziewięćdziesiąty percentyl osiągnął wartość 29,3 g, wskazując na stosunkowo niewielką grupę osób spożywających większe ilości błonnika.
+
+Analiza klasyfikacji uczestników wykazała, że około 72,4% badanych zostało zakwalifikowanych do grupy charakteryzującej się niedostatecznym spożyciem błonnika. Jedynie 24,1% uczestników osiągało poziom mieszczący się w przyjętym zakresie prawidłowego spożycia, natomiast nadmiar błonnika występował sporadycznie. Uzyskane wyniki wskazują że, niedobór błonnika może stanowić istotny problem żywieniowy w analizowanej populacji.
+
+Kolejnym analizowanym składnikiem odżywczym był sód. Analogicznie do błonnika obliczono podstawowe statystyki opisowe. Tabela 2.3 przedstawia wyniki analizy spożycia sodu
+```{python}
+#| echo: false
+#| label: fig-sodium-table
+#| fig-cap: "Wyniki analizy spożycia sodu"
+sodium_table = pd.DataFrame({
+    "Miara": [
+        "Mediana [mg]",
+        "90 percentyl [mg]",
+        "Niedobór [%]",
+        "Norma [%]",
+        "Nadmiar [%]"
+    ],
+    "Wartość": [
+        gold_stats.loc[0, "median_sodium_mg"],
+        gold_stats.loc[0, "p90_sodium_mg"],
+        gold_stats.loc[0, "pct_low_sodium"],
+        gold_stats.loc[0, "pct_normal_sodium"],
+        gold_stats.loc[0, "pct_high_sodium"]
+    ]
+})
+
+sodium_table
+```
+
+Mediana spożycia sodu wyniosła 3091 mg dziennie, natomiast dziewięćdziesiąty percentyl osiągnął wartość 5704 mg. Otrzymane wyniki wskazują na występowanie znacznej liczby osób spożywających bardzo duże ilości sodu.
+
+Analiza klasyfikacji wykazała, że około 81% uczestników badania zostało zakwalifikowanych do grupy nadmiernego spożycia sodu. Prawidłowy poziom spożycia odnotowano jedynie u około 11,3% badanych, natomiast niedobór występował u około 7,7% uczestników. Uzyskane wyniki sugerują, że nadmierne spożycie sodu stanowi istotny problem zdrowotny w analizowanej populacji.
+
+### Wnioski z analizy eksploracyjnej
+
+Przeprowadzona analiza eksploracyjna wykazała występowanie dwóch wyraźnych problemów żywieniowych w analizowanej populacji. Z jednej strony zaobserwowano bardzo wysoki odsetek osób spożywających niewystarczające ilości błonnika, z drugiej natomiast znaczący udział uczestników charakteryzujących się nadmiernym spożyciem sodu.
+
+Wyniki te pokazują, że analiza danych populacyjnych pozwala skutecznie identyfikować potencjalne problemy żywieniowe. Same statystyki opisowe nie dostarczają jednak informacji o możliwych konsekwencjach zdrowotnych obserwowanych zjawisk. Aby właściwie interpretować uzyskane wyniki, konieczne jest odniesienie ich do aktualnej wiedzy naukowej oraz publikacji opisujących wpływ poszczególnych składników odżywczych na zdrowie człowieka.
+
+Przedstawione ograniczenie stanowi podstawę do opracowania systemu wykorzystującego architekturę Retrieval-Augmented Generation, którego zadaniem jest wspomaganie analityka poprzez automatyczne wyszukiwanie publikacji naukowych oraz generowanie raportów opartych zarówno na danych statystycznych, jak i aktualnej literaturze naukowej.
+
+## Podsumowanie rozdziału
+
+W rozdziale przedstawiono problematykę zdrowia publicznego w kontekście żywienia oraz znaczenie analizy danych populacyjnych w identyfikacji problemów związanych ze spożyciem składników odżywczych. Omówiono również charakterystykę badania NHANES, wykorzystane źródła danych oraz proces przygotowania końcowego zbioru analitycznego wykorzystywanego w dalszej części pracy. Przeprowadzona analiza eksploracyjna wykazała występowanie istotnych problemów żywieniowych w analizowanej populacji. Zaobserwowano bardzo wysoki odsetek osób charakteryzujących się niedostatecznym spożyciem błonnika oraz znaczący udział uczestników przekraczających przyjęte wartości referencyjne dla spożycia sodu. Wyniki te wskazują, że analiza danych populacyjnych pozwala skutecznie identyfikować potencjalne obszary wymagające dalszej uwagi specjalistów z zakresu zdrowia publicznego i żywienia.
+
+Jednocześnie sama analiza statystyczna nie dostarcza informacji o możliwych konsekwencjach zdrowotnych obserwowanych zjawisk. Interpretacja wyników wymaga odniesienia do aktualnej wiedzy naukowej oraz publikacji opisujących wpływ poszczególnych składników odżywczych na zdrowie człowieka. W związku z tym zasadne jest opracowanie narzędzi wspomagających proces wyszukiwania literatury naukowej oraz generowania raportów interpretujących wyniki analiz.
+
+W kolejnym rozdziale przedstawiono projekt systemu wykorzystującego architekturę Retrieval-Augmented Generation, którego zadaniem jest wspomaganie analityków zdrowia publicznego poprzez automatyczne wyszukiwanie publikacji naukowych oraz generowanie raportów opartych na danych populacyjnych i aktualnej literaturze naukowej.
