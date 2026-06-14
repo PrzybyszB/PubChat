@@ -3,3 +3,4 @@ Data/
 .env
 my_notes.py
 __pycache__/
+*.pyc
