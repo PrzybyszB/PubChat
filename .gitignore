@@ -2,3 +2,4 @@ Data/
 .venv/
 .env
 my_notes.py
+__pycache__/
