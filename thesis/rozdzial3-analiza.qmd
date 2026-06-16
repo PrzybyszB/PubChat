@@ -1,4 +1,92 @@
-# Przeprowadzona analiza
+# Implementacja systemu
+Pierwszym etapem implementacji systemu było przygotowanie bazy wiedzy wykorzystywanej podczas generowania raportów. W tym celu pobrano publikacje naukowe z bazy PubMed, a następnie zapisano ich metadane w relacyjnej bazie danych PostgreSQL.
+
+Po pobraniu artykułów zaimplementowano mechanizm oceny jakości publikacji naukowych. Celem tego etapu było preferowanie badań dostarczających bardziej wiarygodnych dowodów naukowych. W systemie wykorzystano punktację opartą na rodzaju publikacji.
+
+```{python}
+SCORE_MAP = {
+    "Meta-Analysis": 5,
+    "Systematic Review": 4,
+    "Randomized Controlled Trial": 4,
+    "Review": 3,
+    "Journal Article": 1
+}
+```
+
+Najwyższą ocenę otrzymują metaanalizy oraz przeglądy systematyczne, ponieważ stanowią one najwyższy poziom dowodów naukowych. Niższą punktację przyznano pojedynczym artykułom naukowym.Oprócz rodzaju publikacji uwzględniono również aktualność badań. Nowsze publikacje otrzymują dodatkowe punkty zwiększające ich znaczenie podczas późniejszego procesu wyszukiwania.
+
+```{python}
+year_bonus = 0
+
+if year:
+    age = CURRENT_YEAR - year
+
+    if age <= 4:
+        year_bonus = 2
+    elif age <= 7:
+        year_bonus = 1
+    else:
+        year_bonus = 0
+
+total_quality_score = type_score + year_bonus
+```
+
+Tak wyznaczona wartość quality_score stanowi podstawową ocenę jakości publikacji wykorzystywaną przez kolejne etapy systemu.
+
+Ocena jakości publikacji została rozszerzona o dodatkowe informacje pozyskiwane automatycznie przy użyciu dużego modelu językowego. Zadaniem modelu było przeanalizowanie abstraktu artykułu i określenie rodzaju badanej populacji. W systemie przyjęto trzy możliwe klasy:
+
+```{python}
+POPULATION_SCORE_MAP = {
+    "human": 2,
+    "animal": 1,
+    "unknown": 0
+}
+```
+
+Najwyższą ocenę otrzymują badania prowadzone na ludziach, ponieważ są one najbardziej przydatne z punktu widzenia analizy zdrowia publicznego. Badania wykorzystujące wyłącznie modele zwierzęce otrzymują niższą punktację, natomiast artykuły, dla których nie udało się jednoznacznie określić rodzaju populacji, nie otrzymują dodatkowych punktów. Końcowa ocena publikacji wyznaczana jest poprzez połączenie oceny jakości publikacji oraz punktacji przyznanej przez model językowy.
+
+```{python}
+llm_final_score = quality_score + llm_population_score
+```
+
+Dzięki temu podczas późniejszego wyszukiwania preferowane są publikacje nie tylko wysokiej jakości, ale również bardziej użyteczne z punktu widzenia analiz dotyczących zdrowia człowieka.Po zakończeniu procesu wzbogacania metadanych dla każdej publikacji generowana jest reprezentacja wektorowa wykorzystywana przez mechanizm wyszukiwania semantycznego. Na potrzeby tworzenia embeddingów połączono tytuł oraz abstrakt publikacji w pojedynczy dokument tekstowy.
+
+```{python}
+def build_embedding_text(row):
+    return f"""
+Title:
+{row.title}
+
+Abstract:
+{row.abstract}
+"""
+```
+
+Tak przygotowany tekst przekazywany jest do modelu embeddingowego, który generuje reprezentację numeryczną opisującą znaczenie publikacji. Wektory zapisywane są w bazie PostgreSQL z wykorzystaniem rozszerzenia pgvector. Podczas generowania raportu system tworzy embedding zapytania opisującego analizowany problem żywieniowy. Następnie wykonywane jest wyszukiwanie semantyczne wśród zapisanych wektorów publikacji. Uzyskane wyniki są dodatkowo sortowane z uwzględnieniem wcześniej wyznaczonej oceny jakości artykułu. Takie podejście pozwala jednocześnie uwzględniać znaczenie publikacji względem analizowanego problemu oraz wartość naukową danego źródła.
+
+W celu udostępnienia funkcjonalności systemu zaimplementowano interfejs REST API wykorzystujący framework FastAPI. Interfejs pełni rolę warstwy komunikacyjnej pomiędzy użytkownikiem a poszczególnymi modułami systemu. Po otrzymaniu żądania API uruchamia moduł analizy statystycznej, następnie inicjuje proces wyszukiwania publikacji naukowych, a na końcu wywołuje generator raportów. Wynik zwracany jest do użytkownika w postaci ustrukturyzowanej odpowiedzi zawierającej statystyki oraz wygenerowany raport. Zastosowanie architektury API umożliwia łatwą integrację systemu z aplikacjami webowymi oraz dalszą rozbudowę rozwiązania o nowe funkcjonalności bez konieczności modyfikacji istniejących komponentów.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{.python}
 #kod
