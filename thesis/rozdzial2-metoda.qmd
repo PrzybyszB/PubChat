@@ -1,19 +1,90 @@
-# Wybrana metoda statystyczna
+# Projekt systemu wspomagania analizy żywieniowej
+W poprzednim rozdziale przedstawiono problematykę zdrowia publicznego związaną ze spożyciem składników odżywczych oraz przeprowadzono analizę danych pochodzących z badania NHANES. Uzyskane wyniki wskazały na występowanie istotnych problemów żywieniowych, takich jak niedostateczne spożycie błonnika oraz nadmierne spożycie sodu w analizowanej populacji.
 
-## Metoda 1 {#sec-metoda1}
+Sama analiza statystyczna nie pozwala jednak na pełną interpretację uzyskanych wyników. Ocena potencjalnych konsekwencji zdrowotnych wymaga odniesienia obserwowanych zjawisk do aktualnej wiedzy naukowej. W praktyce oznacza to konieczność wyszukiwania odpowiednich publikacji naukowych oraz analizy zawartych w nich informacji, co jest procesem czasochłonnym i wymagającym specjalistycznej wiedzy.
 
-TEKST
+W odpowiedzi na przedstawione wyzwania zaprojektowano system wspomagający analizę spożycia składników odżywczych wykorzystujący architekturę Retrieval-Augmented Generation. System łączy dane statystyczne pochodzące z badania NHANES z informacjami pozyskanymi z literatury naukowej zgromadzonej w dedykowanej bazie wiedzy. Celem rozwiązania jest automatyzacja procesu wyszukiwania publikacji naukowych oraz generowania raportów wspierających interpretację wyników analiz żywieniowych.
 
-Wzory w tekście wstawiamy z wykorzystanie pojedyńczego znaku dolara: $y=ax+b$, natomiast jak chcemy go wycentrować to wtedy używany jest podwójny.
+W dalszej części rozdziału przedstawiono założenia funkcjonalne systemu, architekturę rozwiązania, sposób budowy bazy wiedzy oraz proces generowania raportów.
 
-$$c^2=a^2+b^2$$ {#eq-pitagoras}
+## Założenia funkcjonalne systemu
+Celem opracowanego systemu jest wspomaganie analizy spożycia składników odżywczych poprzez automatyczne generowanie raportów opartych na danych populacyjnych oraz aktualnej literaturze naukowej. System został zaprojektowany jako narzędzie wspierające specjalistów zajmujących się analizą danych zdrowotnych, żywieniem oraz zdrowiem publicznym.
 
-@eq-pitagoras stanowi podstawę współczesnej matematyki.
+Podstawowym zadaniem systemu jest identyfikacja potencjalnych problemów żywieniowych występujących w analizowanej populacji oraz dostarczanie informacji naukowych umożliwiających interpretację uzyskanych wyników. W przeciwieństwie do tradycyjnych analiz statystycznych rozwiązanie nie ogranicza się wyłącznie do prezentowania wartości liczbowych, lecz wykorzystuje również publikacje naukowe w celu wyjaśnienia znaczenia obserwowanych zjawisk.
 
-TEKST
+Dane wejściowe systemu stanowią informacje dotyczące spożycia wybranych składników odżywczych pochodzące z przygotowanego zbioru analitycznego NHANES. Na podstawie tych danych wyznaczane są podstawowe statystyki opisowe oraz określany jest charakter problemu żywieniowego, na przykład niedobór lub nadmierne spożycie analizowanego składnika.
 
-## Metoda 2
+Wyniki analizy statystycznej wykorzystywane są następnie do wyszukania odpowiednich publikacji naukowych w dedykowanej bazie wiedzy utworzonej na podstawie artykułów pozyskanych z bazy PubMed. System identyfikuje najbardziej istotne publikacje związane z analizowanym problemem, a następnie wykorzystuje je podczas generowania raportu końcowego.
 
-W podrozdziale [-@sec-metoda1] przedstawiono pierwszą wersję, notomiast w tym podrozdziale znajdzie się opis jej ulepszenia. Jeżeli nie chcemy wstawiać prefiksu razem z odsyłaczem to poprzedzamy go znakiem minusa.
+Rezultatem działania systemu jest raport tekstowy zawierający podsumowanie wyników analizy statystycznej oraz interpretację opartą na aktualnej literaturze naukowej. Raport ma wspierać użytkownika w ocenie skali problemu żywieniowego oraz stanowić punkt wyjścia do dalszej analizy eksperckiej.
 
-TEKST
+Przykładowy scenariusz użycia systemu zakłada analizę spożycia błonnika pokarmowego w badanej populacji. System oblicza statystyki opisowe, określa udział osób charakteryzujących się niedoborem błonnika, wyszukuje publikacje naukowe dotyczące konsekwencji zdrowotnych niewystarczającego spożycia tego składnika, a następnie generuje raport zawierający interpretację uzyskanych wyników wraz z odniesieniem do literatury naukowej.
+
+## Architektura rozwiązania
+System został zaprojektowany jako rozwiązanie łączące analizę danych populacyjnych z mechanizmami wyszukiwania literatury naukowej oraz generowania tekstu przy użyciu dużych modeli językowych. Architektura systemu składa się z kilku współpracujących modułów odpowiedzialnych za przygotowanie danych, budowę bazy wiedzy, wyszukiwanie publikacji naukowych oraz generowanie raportów.
+
+Głównym założeniem architektury było rozdzielenie procesu przygotowania bazy wiedzy od procesu generowania raportów. Dzięki temu kosztowne operacje związane z pozyskiwaniem publikacji naukowych, przetwarzaniem treści artykułów oraz generowaniem reprezentacji wektorowych wykonywane są jednorazowo podczas budowy bazy wiedzy. W trakcie generowania raportu system korzysta wyłącznie z przygotowanych wcześniej danych, co znacząco skraca czas odpowiedzi.
+
+![Diagram architektury systemu](figs/Diagram%20architektury%20systemu.png){#fig-arch width=80%}
+
+System składa się z dwóch głównych części: procesu budowy bazy wiedzy oraz procesu generowania raportów. Rozdzielenie tych etapów pozwala na jednorazowe przygotowanie zasobów wiedzy wykorzystywanych później podczas generowania raportów dla użytkownika.
+
+Proces budowy bazy wiedzy rozpoczyna się od pozyskania publikacji naukowych z bazy PubMed. Artykuły wyszukiwane są przy użyciu wcześniej zdefiniowanych zapytań związanych z analizowanymi składnikami odżywczymi. Następnie pobierane są metadane publikacji, takie jak tytuł, abstrakt, rok publikacji oraz typ badania. Na tym etapie wykonywana jest również wstępna ocena jakości publikacji oparta na rodzaju artykułu naukowego oraz dacie publikacji.
+
+Pozyskane artykuły są następnie przetwarzane przy wykorzystaniu dużego modelu językowego. Zadaniem tego etapu jest wzbogacenie danych o dodatkowe metadane umożliwiające ocenę przydatności publikacji z punktu widzenia analizy żywieniowej. Model językowy identyfikuje między innymi rodzaj badanej populacji oraz generuje dodatkowe informacje wykorzystywane podczas wyznaczania końcowej oceny jakości artykułu.
+
+Kolejnym etapem jest utworzenie reprezentacji wektorowych dla treści publikacji. Wygenerowane embeddingi wraz z metadanymi zapisywane są w bazie PostgreSQL rozszerzonej o mechanizm pgvector. Tak przygotowana baza wiedzy umożliwia późniejsze wyszukiwanie semantyczne publikacji naukowych na podstawie znaczenia zapytania, a nie wyłącznie dopasowania słów kluczowych.
+
+Równolegle przygotowywany jest zbiór danych populacyjnych pochodzących z badania NHANES. Dane przechodzą proces czyszczenia, filtrowania oraz transformacji, którego rezultatem jest końcowy zbiór analityczny wykorzystywany przez moduł statystyczny systemu. Na podstawie tych danych obliczane są statystyki opisowe pozwalające określić skalę analizowanego problemu żywieniowego.
+
+Proces generowania raportu rozpoczyna się od identyfikacji analizowanego składnika odżywczego oraz charakteru problemu żywieniowego, na przykład niedoboru lub nadmiernego spożycia. Na tej podstawie tworzona jest reprezentacja zapytania wykorzystywana przez moduł wyszukiwania publikacji. System wykonuje wyszukiwanie semantyczne w bazie wiedzy, a następnie przeprowadza dodatkowy etap rankingu uwzględniający zarówno podobieństwo semantyczne, jak i ocenę jakości publikacji.
+
+Najwyżej ocenione artykuły naukowe zostają połączone z wynikami analizy statystycznej pochodzącej ze zbioru NHANES. Tak przygotowany kontekst przekazywany jest do modelu językowego odpowiedzialnego za wygenerowanie raportu końcowego. Raport zawiera podsumowanie wyników analizy, interpretację obserwowanych zjawisk oraz informacje pochodzące z aktualnej literatury naukowej wraz ze wskazaniem wykorzystanych źródeł.
+
+Przedstawiona architektura umożliwia oddzielenie procesu przygotowania bazy wiedzy od procesu generowania raportów. Dzięki temu system może wykorzystywać wcześniej przygotowane publikacje naukowe oraz reprezentacje wektorowe, ograniczając liczbę operacji wykonywanych podczas generowania raportu. Takie podejście zwiększa wydajność rozwiązania oraz pozwala na łatwe rozszerzanie bazy wiedzy o kolejne publikacje naukowe.
+
+## Architektura bazy wiedzy
+Kluczowym elementem opracowanego systemu jest baza wiedzy wykorzystywana podczas generowania raportów. Jej zadaniem jest dostarczanie publikacji naukowych powiązanych z analizowanym problemem żywieniowym. W przeciwieństwie do tradycyjnych rozwiązań wykorzystujących wyszukiwanie internetowe w czasie rzeczywistym, w opracowanym systemie zastosowano dedykowaną bazę wiedzy przygotowaną na podstawie wcześniej wyselekcjonowanych publikacji naukowych.
+
+Źródłem wiedzy wykorzystanym w projekcie jest baza PubMed, będąca jednym z największych repozytoriów publikacji z zakresu medycyny, zdrowia publicznego oraz nauk o żywieniu. W celu ograniczenia liczby nieistotnych dokumentów zastosowano zestaw zapytań opartych na terminach MeSH związanych z analizowanymi składnikami odżywczymi. Pozwoliło to na pozyskanie publikacji dotyczących między innymi spożycia błonnika pokarmowego oraz sodu.
+
+Proces budowy bazy wiedzy rozpoczyna się od pobrania metadanych publikacji, takich jak identyfikator PubMed, tytuł, abstrakt, rok publikacji oraz typ artykułu naukowego. Następnie dla każdej publikacji wyznaczana jest wstępna ocena jakości uwzględniająca rodzaj badania oraz aktualność publikacji. Dzięki temu możliwe jest preferowanie bardziej wartościowych źródeł wiedzy podczas późniejszego procesu wyszukiwania.
+
+W kolejnym etapie wykorzystano duży model językowy do wzbogacenia artykułów o dodatkowe metadane. Model analizuje treść abstraktów i identyfikuje między innymi typ badanej populacji, rozróżniając badania prowadzone na ludziach od badań opartych wyłącznie na modelach zwierzęcych. Uzyskane informacje wykorzystywane są podczas wyznaczania końcowej oceny publikacji oraz wspomagają późniejszy proces rankingu wyników wyszukiwania.
+
+Po zakończeniu procesu wzbogacania danych generowane są reprezentacje wektorowe publikacji naukowych. Embeddingi tworzone są na podstawie treści tytułów oraz abstraktów artykułów i stanowią numeryczną reprezentację znaczenia dokumentu. Dzięki temu możliwe jest wyszukiwanie publikacji podobnych semantycznie do analizowanego problemu, nawet jeśli użyte w zapytaniu słowa nie występują bezpośrednio w treści artykułu.
+
+Metadane publikacji oraz odpowiadające im reprezentacje wektorowe przechowywane są w relacyjnej bazie danych PostgreSQL rozszerzonej o moduł pgvector. Rozwiązanie to umożliwia jednoczesne przechowywanie danych opisowych oraz realizację operacji wyszukiwania semantycznego bez konieczności wykorzystywania zewnętrznych baz wektorowych.
+
+Przygotowana w ten sposób baza wiedzy stanowi fundament procesu Retrieval-Augmented Generation wykorzystywanego przez system. W momencie generowania raportu odpowiednie publikacje wyszukiwane są na podstawie podobieństwa semantycznego do analizowanego problemu żywieniowego, a następnie przekazywane do modelu językowego jako dodatkowy kontekst wspomagający interpretację wyników analizy.
+
+## Proces generowania raportu
+Po przygotowaniu bazy wiedzy możliwe jest generowanie raportów wspomagających interpretację wyników analiz żywieniowych. Proces ten wykorzystuje architekturę Retrieval-Augmented Generation, której zadaniem jest połączenie danych statystycznych pochodzących ze zbioru NHANES z informacjami zawartymi w publikacjach naukowych zgromadzonych w bazie wiedzy.
+
+Proces rozpoczyna się od analizy wyników statystycznych dotyczących wybranego składnika odżywczego. Na podstawie obliczonych statystyk system określa charakter problemu żywieniowego występującego w analizowanej populacji. W zależności od uzyskanych wyników problem może zostać zaklasyfikowany między innymi jako niedobór lub nadmierne spożycie danego składnika.
+
+Po zidentyfikowaniu problemu system buduje zapytanie opisujące analizowaną sytuację. Zapytania są przygotowywane dla wcześniej zdefiniowanych scenariuszy żywieniowych i mają postać krótkich opisów tekstowych wykorzystywanych podczas wyszukiwania semantycznego. Dzięki temu możliwe jest wyszukiwanie publikacji odnoszących się do konkretnego problemu zdrowotnego, a nie wyłącznie do pojedynczych słów kluczowych.
+
+Następnie generowana jest reprezentacja wektorowa zapytania, która wykorzystywana jest do wyszukania najbardziej podobnych semantycznie publikacji w bazie wiedzy. W pierwszym etapie wybierana jest grupa kandydatów o najwyższym podobieństwie do analizowanego problemu. Kolejno wykonywany jest dodatkowy etap rankingu uwzględniający zarówno podobieństwo semantyczne, jak i ocenę jakości publikacji wyznaczoną podczas budowy bazy wiedzy.
+
+Najwyżej ocenione publikacje stanowią kontekst przekazywany do modelu językowego. Oprócz informacji pochodzących z literatury naukowej model otrzymuje również wyniki analizy statystycznej obejmujące między innymi medianę spożycia, wartości percentylowe oraz udział osób należących do poszczególnych kategorii spożycia. Pozwala to na jednoczesne wykorzystanie danych liczbowych oraz wiedzy naukowej podczas generowania odpowiedzi.
+
+W ostatnim etapie model językowy tworzy raport tekstowy zawierający podsumowanie wyników analizy, interpretację zaobserwowanych zjawisk oraz odniesienie do aktualnej literatury naukowej. Raport uzupełniany jest o informacje dotyczące wykorzystanych publikacji, co umożliwia użytkownikowi dalszą weryfikację przedstawionych wniosków.
+
+Zastosowanie architektury Retrieval-Augmented Generation pozwala ograniczyć ryzyko generowania treści niezwiązanych z analizowanym problemem oraz zapewnia, że raport tworzony jest w oparciu o wcześniej przygotowaną bazę wiedzy zawierającą publikacje naukowe związane z żywieniem i zdrowiem publicznym.
+
+## Ograniczenia systemu
+Pomimo możliwości automatyzacji części procesu analizy danych żywieniowych opracowane rozwiązanie posiada szereg ograniczeń wynikających zarówno z charakterystyki wykorzystanych danych, jak i zastosowanych metod sztucznej inteligencji.
+
+Pierwszym ograniczeniem jest wykorzystanie danych pochodzących z badania NHANES. Analiza opiera się na deklarowanym przez uczestników spożyciu żywności z jednego dnia badania. Pomimo zastosowania dodatkowych filtrów jakościowych dane te mogą nie odzwierciedlać długoterminowych nawyków żywieniowych poszczególnych osób. Wyniki analizy należy więc interpretować jako przybliżenie rzeczywistego sposobu żywienia badanej populacji.
+
+Kolejne ograniczenie związane jest z zakresem zgromadzonej bazy wiedzy. System wykorzystuje wyłącznie publikacje naukowe pozyskane z bazy PubMed na podstawie wcześniej zdefiniowanych zapytań. Oznacza to, że raporty generowane są wyłącznie w oparciu o wiedzę zawartą w zgromadzonych dokumentach. Publikacje spoza przygotowanej bazy wiedzy nie są uwzględniane podczas procesu wyszukiwania i generowania odpowiedzi.
+
+Ograniczenia wynikają również z wykorzystania dużych modeli językowych. Pomimo zastosowania architektury Retrieval-Augmented Generation modele językowe mogą generować odpowiedzi zawierające uproszczenia lub interpretacje nie w pełni zgodne z intencją autora publikacji naukowej. Z tego względu wygenerowane raporty powinny być traktowane jako narzędzie wspomagające analizę, a nie jako źródło ostatecznych decyzji eksperckich.
+
+Istotnym ograniczeniem jest również sposób budowy zapytań wykorzystywanych podczas wyszukiwania publikacji. W obecnej wersji systemu wykorzystywany jest zestaw wcześniej przygotowanych scenariuszy odpowiadających określonym problemom żywieniowym. Rozwiązanie to upraszcza proces wyszukiwania, jednak ogranicza elastyczność systemu w przypadku bardziej złożonych lub nietypowych analiz.
+
+Należy również podkreślić, że obecna wersja rozwiązania została przygotowana dla wybranych składników odżywczych. Rozszerzenie systemu o kolejne składniki wymaga przygotowania odpowiednich zapytań do bazy PubMed, rozbudowy bazy wiedzy oraz zdefiniowania dodatkowych scenariuszy analitycznych.
+
+Pomimo przedstawionych ograniczeń opracowany system pokazuje możliwość skutecznego połączenia danych populacyjnych, literatury naukowej oraz metod Retrieval-Augmented Generation w celu wspomagania procesu analizy spożycia składników odżywczych. Rozwiązanie może stanowić podstawę do dalszego rozwoju narzędzi wspierających pracę analityków zdrowia publicznego i specjalistów z zakresu żywienia.
+
