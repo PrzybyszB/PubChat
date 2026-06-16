@@ -8,8 +8,6 @@ Ocena stanu odżywiania populacji wymaga gromadzenia oraz analizy dużych ilośc
 
 Wraz ze wzrostem ilości dostępnych danych rośnie znaczenie narzędzi informatycznych wspomagających proces ich analizy. Nowoczesne metody analizy danych umożliwiają identyfikację trendów żywieniowych, wykrywanie nieprawidłowości oraz wspieranie ekspertów w procesie podejmowania decyzji. Szczególnego znaczenia nabierają rozwiązania wykorzystujące sztuczną inteligencję oraz automatyczne przetwarzanie informacji naukowej, które mogą przyspieszyć interpretację wyników i ułatwić dostęp do aktualnej wiedzy medycznej.
 
-## Problem badawczy
-
 Pomimo dostępności dużych zbiorów danych żywieniowych oraz obszernej literatury naukowej, proces identyfikacji problemów żywieniowych i ich interpretacji nadal wymaga znacznego nakładu pracy ekspertów. Analitycy zdrowia publicznego oraz specjaliści z zakresu żywienia muszą nie tylko analizować dane dotyczące spożycia składników odżywczych, ale również interpretować wyniki w kontekście aktualnej wiedzy naukowej. W praktyce oznacza to konieczność równoczesnej pracy z danymi statystycznymi oraz przeglądania licznych publikacji naukowych.
 
 Analiza dużych zbiorów danych populacyjnych pozwala na identyfikację niedoborów i nadmiarów składników odżywczych występujących w określonych grupach społecznych. Samo wykrycie problemu nie jest jednak wystarczające do sformułowania wniosków oraz rekomendacji. Konieczne jest również odniesienie wyników do aktualnych badań naukowych opisujących potencjalne skutki zdrowotne obserwowanych zjawisk. Proces ten jest czasochłonny i wymaga specjalistycznej wiedzy zarówno z zakresu żywienia, jak i wyszukiwania oraz oceny jakości literatury naukowej.
@@ -20,8 +18,6 @@ Rozwój metod sztucznej inteligencji, w szczególności dużych modeli językowy
 
 W związku z przedstawionymi wyzwaniami sformułowano następujące pytanie badawcze:
 **W jaki sposób można wykorzystać architekturę Retrieval-Augmented Generation do wspomagania analizy spożycia składników odżywczych oraz generowania raportów opartych na danych żywieniowych i literaturze naukowej?**
-
-## Cel i zakres pracy
 
 Celem niniejszej pracy jest zaprojektowanie oraz implementacja systemu wspomagania analizy spożycia składników odżywczych z wykorzystaniem metod Retrieval-Augmented Generation. Opracowane rozwiązanie ma wspierać analityków zdrowia publicznego w identyfikacji niedoborów i nadmiarów składników odżywczych występujących w badanej populacji oraz dostarczać informacje oparte na aktualnej literaturze naukowej.
 
