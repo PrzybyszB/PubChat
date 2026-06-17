@@ -118,17 +118,23 @@ Sources:
 """
 if __name__ == "__main__":
 
+    articles = retrieve_articles(
+        query_text=QUERY_MAP["fiber_deficiency"]["query"],
+        final_top_k=3
+    )
+
     report = generate_report(
         nutrient_name="Dietary Fiber",
 
-        median_value=14.2,
-        p90_value=27.5,
+        mean_value=16.1,
+        median_value=13.9,
+        p90_value=28.9,
 
-        pct_low=68.4,
-        pct_normal=29.3,
-        pct_high=2.3,
+        pct_low=55.1,
+        pct_normal=36.1,
+        pct_high=8.8,
 
-        query_text=QUERY_MAP["low_fiber"]["query"]
+        articles=articles
     )
 
     print(report)

@@ -117,7 +117,7 @@ def retrieve_articles(query_text: str, top_k_candidates: int = 20, final_top_k: 
 
 if __name__ == "__main__":
 
-    results = retrieve_articles(query_text=QUERY_MAP["low_fiber"]["query"])
+    results = retrieve_articles(query_text=QUERY_MAP["fiber_deficiency"]["query"])
 
     for idx, article in enumerate(results, start=1):
 
