@@ -4,3 +4,5 @@ Data/
 my_notes.py
 __pycache__/
 *.pyc
+/.quarto/
+**/*.quarto_ipynb
