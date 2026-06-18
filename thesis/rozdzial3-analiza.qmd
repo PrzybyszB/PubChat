@@ -64,7 +64,7 @@ Abstract:
 
 Tak przygotowany tekst przekazywany jest do modelu embeddingowego, który generuje reprezentację numeryczną opisującą znaczenie publikacji. Wektory zapisywane są w bazie PostgreSQL z wykorzystaniem rozszerzenia pgvector. Podczas generowania raportu system tworzy embedding zapytania opisującego analizowany problem żywieniowy. Następnie wykonywane jest wyszukiwanie semantyczne wśród zapisanych wektorów publikacji. Uzyskane wyniki są dodatkowo sortowane z uwzględnieniem wcześniej wyznaczonej oceny jakości artykułu. Takie podejście pozwala jednocześnie uwzględniać znaczenie publikacji względem analizowanego problemu oraz wartość naukową danego źródła.
 
-W celu udostępnienia funkcjonalności systemu zaimplementowano interfejs REST API wykorzystujący framework FastAPI. Interfejs pełni rolę warstwy komunikacyjnej pomiędzy użytkownikiem a poszczególnymi modułami systemu. Po otrzymaniu żądania API uruchamia moduł analizy statystycznej, następnie inicjuje proces wyszukiwania publikacji naukowych, a na końcu wywołuje generator raportów. Wynik zwracany jest do użytkownika w postaci ustrukturyzowanej odpowiedzi zawierającej statystyki oraz wygenerowany raport. Zastosowanie architektury API umożliwia łatwą integrację systemu z aplikacjami webowymi oraz dalszą rozbudowę rozwiązania o nowe funkcjonalności bez konieczności modyfikacji istniejących komponentów.
+W celu udostępnienia funkcjonalności systemu zaimplementowano interfejs REST API wykorzystujący framework FastAPI [@fastapi_docs]. Interfejs pełni rolę warstwy komunikacyjnej pomiędzy użytkownikiem a poszczególnymi modułami systemu. Po otrzymaniu żądania API uruchamia moduł analizy statystycznej, następnie inicjuje proces wyszukiwania publikacji naukowych, a na końcu wywołuje generator raportów. Wynik zwracany jest do użytkownika w postaci ustrukturyzowanej odpowiedzi zawierającej statystyki oraz wygenerowany raport. Zastosowanie architektury API umożliwia łatwą integrację systemu z aplikacjami webowymi oraz dalszą rozbudowę rozwiązania o nowe funkcjonalności bez konieczności modyfikacji istniejących komponentów.
 
 
 ## Weryfikacja działania systemu
@@ -72,31 +72,16 @@ W celu oceny poprawności działania opracowanego rozwiązania przeprowadzono te
 
 W pierwszym scenariuszu wykorzystano wyniki analizy spożycia błonnika przedstawione w Rozdziale 1. Na podstawie wyznaczonych statystyk system zidentyfikował dominujący problem niedostatecznego spożycia błonnika w analizowanej populacji. W związku z tym uruchomiony został scenariusz wyszukiwania publikacji naukowych dotyczących konsekwencji zdrowotnych niedoboru błonnika pokarmowego. Po wygenerowaniu zapytania moduł Retrieval przeprowadził wyszukiwanie semantyczne w bazie wiedzy. Następnie wykonano dodatkowy etap rankingu uwzględniający zarówno podobieństwo semantyczne publikacji do analizowanego problemu, jak i ocenę jakości wyznaczoną podczas budowy bazy wiedzy.
 
-```{python}
-#| echo: false
-#| #| label: fig-publication-fiber-table
-#| fig-cap: "Publikacje naukowe zwrócone przez moduł Retrieval dla scenariusza niedoboru błonnika"
-from app.services.retriever import retrieve_articles, QUERY_MAP
-import pandas as pd
+Table: Publikacje naukowe zwrócone przez moduł Retrieval dla scenariusza niedoboru błonnika {#tbl-fiber}
 
-fiber_articles = retrieve_articles(
-    query_text=QUERY_MAP["fiber_deficiency"]["query"],
-    final_top_k=3
-)
+| PMID     | Typ publikacji    | Ocena | Similarity |
+|:---------|:-------------------|------:|-----------:|
+| 40651334 | Systematic Review |     8 |      0.615 |
+| 40537680 | RCT               |     8 |      0.564 |
+| 41459804 | RCT               |     8 |      0.558 |
 
-pd.DataFrame(
-    [
-        {
-            "PMID": article["pubmed_id"],
-            "Typ publikacji": article["publication_type"],
-            "Ocena końcowa": article["llm_final_score"],
-            "Ocena Retrieval": round(article["retrieval_score"], 3),
-            "Tytuł publikacji": article["title"]
-        }
-        for article in fiber_articles
-    ]
-)
-```
+Źródło: opracowanie własne na podstawie publikacji [@veronese2025fiber; @haas2025meatmark; @vankalkeren2026fiber].
+
 Analiza wyników wskazuje, że wszystkie zwrócone publikacje dotyczyły wpływu spożycia błonnika na zdrowie człowieka. Wśród najwyżej ocenionych artykułów znalazły się metaanalizy, przeglądy systematyczne oraz badania prowadzone na populacji ludzkiej, co potwierdza poprawność działania zastosowanego mechanizmu rankingu. Na podstawie odnalezionych publikacji oraz wyników analizy statystycznej model językowy wygenerował raport interpretujący zaobserwowane zjawisko.
 
 >2. Evidence From Literature  
@@ -106,31 +91,15 @@ Wygenerowany raport poprawnie odnosił się do problemu niedostatecznego spożyc
 
 Drugi scenariusz dotyczył analizy spożycia sodu. Podobnie jak w przypadku błonnika wykorzystano wyniki analizy statystycznej przedstawione wcześniej w pracy. Na podstawie uzyskanych rezultatów system zaklasyfikował analizowany problem jako nadmierne spożycie sodu występujące w znacznej części badanej populacji. W kolejnym kroku uruchomiony został proces wyszukiwania publikacji naukowych związanych z konsekwencjami nadmiernego spożycia sodu. Mechanizm Retrieval przeprowadził wyszukiwanie semantyczne, a następnie wykonał dodatkowy ranking wyników uwzględniający ocenę jakości publikacji.
 
-```{python}
-#| echo: false
-#| #| label: fig-publication-sodium-table
-#| fig-cap: "Publikacje naukowe zwrócone przez moduł Retrieval dla scenariusza podwyższonego sodu"
-from app.services.retriever import retrieve_articles, QUERY_MAP
-import pandas as pd
+Table: Publikacje naukowe zwrócone przez moduł Retrieval dla scenariusza nadmiernego spożycia sodu {#tbl-sodium}
 
-sodium_articles = retrieve_articles(
-    query_text=QUERY_MAP["sodium_excess"]["query"],
-    final_top_k=3
-)
+| PMID     | Typ publikacji    | Ocena | Similarity |
+|:---------|:-------------------|------:|-----------:|
+| 37721034 | Review               |     7 |      0.587 |
+| 40651890 | Review               |     7 |      0.568 |
+| 38545804 | Review               |     7 |      0.566 |
 
-pd.DataFrame(
-    [
-        {
-            "PMID": article["pubmed_id"],
-            "Typ publikacji": article["publication_type"],
-            "Ocena końcowa": article["llm_final_score"],
-            "Ocena Retrieval": round(article["retrieval_score"], 3),
-            "Tytuł publikacji": article["title"]
-        }
-        for article in sodium_articles
-    ]
-)
-```
+Źródło: opracowanie własne na podstawie publikacji [@bailey2024salt; @zoccali2025salt; @nishimoto2024salt].
 
 Zwrócone publikacje koncentrowały się na wpływie nadmiernego spożycia sodu na zdrowie człowieka, ze szczególnym uwzględnieniem chorób układu sercowo-naczyniowego oraz nadciśnienia tętniczego. Podobnie jak w poprzednim scenariuszu najwyższe pozycje zajmowały publikacje posiadające wysoką ocenę jakości naukowej. Na podstawie wyników wyszukiwania oraz danych statystycznych system wygenerował raport opisujący analizowany problem.
 
@@ -149,41 +118,3 @@ Jednocześnie należy uwzględnić ograniczenia rozwiązania. Jakość generowan
 W niniejszym rozdziale przedstawiono implementację oraz weryfikację działania opracowanego systemu wspomagania analizy spożycia składników odżywczych. Zaimplementowano kompletny proces obejmujący budowę bazy wiedzy na podstawie publikacji naukowych pozyskanych z bazy PubMed, ocenę jakości artykułów, generowanie reprezentacji wektorowych oraz mechanizm wyszukiwania semantycznego wykorzystujący architekturę Retrieval-Augmented Generation. Przeprowadzone eksperymenty potwierdziły poprawność działania poszczególnych komponentów systemu. Mechanizm Retrieval skutecznie identyfikował publikacje naukowe związane z analizowanym problemem żywieniowym, natomiast zastosowany model językowy generował raporty uwzględniające zarówno wyniki analizy statystycznej danych NHANES, jak i informacje pochodzące z literatury naukowej. W ramach weryfikacji działania rozwiązania przeanalizowano dwa scenariusze obejmujące spożycie błonnika pokarmowego oraz sodu. W obu przypadkach system poprawnie identyfikował dominujący problem żywieniowy, wyszukiwał odpowiednie publikacje naukowe oraz generował raport zawierający interpretację uzyskanych wyników.
 
 Najważniejszym rezultatem pracy jest opracowanie działającego prototypu systemu łączącego dane populacyjne, bazę wiedzy opartą na publikacjach naukowych oraz możliwości dużych modeli językowych. Uzyskane wyniki wskazują, że architektura Retrieval-Augmented Generation może stanowić skuteczne narzędzie wspomagające analizę danych żywieniowych oraz proces interpretacji wyników w obszarze zdrowia publicznego. Przedstawione rozwiązanie może stanowić podstawę do dalszego rozwoju systemów wspierających pracę analityków zdrowia publicznego, dietetyków oraz badaczy zajmujących się oceną sposobu żywienia populacji.
-
-
-
-
-
-
-```{.python}
-#kod
-```
-
-## Przygotowanie danych
-
-TEKST
-
-```{.python}
-#kod
-```
-
-
-TEKST
-
-## Zastosowanie algorytmu
-
-W tym miejscu zastosujemy metodę opisaną w podrozdziale [-@sec-metoda1].
-
-TEKST
-
-## Rezultaty
-
-TEKST
-
-<!-- Wykres rozrzutu przedstawiający wynagrodzenie przedstawia @fig-wynagrodzenie. -->
-
-```{.python}
-# kod
-```
-
-Tekst

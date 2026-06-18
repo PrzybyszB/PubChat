@@ -27,13 +27,13 @@ Głównym założeniem architektury było rozdzielenie procesu przygotowania baz
 
 ![Diagram architektury systemu](figs/Diagram%20architektury%20systemu.png){#fig-arch width=80%}
 
-System składa się z dwóch głównych części: procesu budowy bazy wiedzy oraz procesu generowania raportów. Rozdzielenie tych etapów pozwala na jednorazowe przygotowanie zasobów wiedzy wykorzystywanych później podczas generowania raportów dla użytkownika.
+System składa się z dwóch głównych części: procesu budowy bazy wiedzy oraz procesu generowania raportów. Diagram przepływu przedstawiony jest na Rysunku 3.1. Rozdzielenie tych etapów pozwala na jednorazowe przygotowanie zasobów wiedzy wykorzystywanych później podczas generowania raportów dla użytkownika.
 
 Proces budowy bazy wiedzy rozpoczyna się od pozyskania publikacji naukowych z bazy PubMed. Artykuły wyszukiwane są przy użyciu wcześniej zdefiniowanych zapytań związanych z analizowanymi składnikami odżywczymi. Następnie pobierane są metadane publikacji, takie jak tytuł, abstrakt, rok publikacji oraz typ badania. Na tym etapie wykonywana jest również wstępna ocena jakości publikacji oparta na rodzaju artykułu naukowego oraz dacie publikacji.
 
 Pozyskane artykuły są następnie przetwarzane przy wykorzystaniu dużego modelu językowego. Zadaniem tego etapu jest wzbogacenie danych o dodatkowe metadane umożliwiające ocenę przydatności publikacji z punktu widzenia analizy żywieniowej. Model językowy identyfikuje między innymi rodzaj badanej populacji oraz generuje dodatkowe informacje wykorzystywane podczas wyznaczania końcowej oceny jakości artykułu.
 
-Kolejnym etapem jest utworzenie reprezentacji wektorowych dla treści publikacji. Wygenerowane embeddingi wraz z metadanymi zapisywane są w bazie PostgreSQL rozszerzonej o mechanizm pgvector. Tak przygotowana baza wiedzy umożliwia późniejsze wyszukiwanie semantyczne publikacji naukowych na podstawie znaczenia zapytania, a nie wyłącznie dopasowania słów kluczowych.
+Kolejnym etapem jest utworzenie reprezentacji wektorowych dla treści publikacji [@openai_embeddings]. Wygenerowane embeddingi wraz z metadanymi zapisywane są w bazie PostgreSQL rozszerzonej o mechanizm pgvector [@postgresql_docs, @pgvector_docs]. Tak przygotowana baza wiedzy umożliwia późniejsze wyszukiwanie semantyczne publikacji naukowych na podstawie znaczenia zapytania, a nie wyłącznie dopasowania słów kluczowych [@reimers2019sentencebert].
 
 Równolegle przygotowywany jest zbiór danych populacyjnych pochodzących z badania NHANES. Dane przechodzą proces czyszczenia, filtrowania oraz transformacji, którego rezultatem jest końcowy zbiór analityczny wykorzystywany przez moduł statystyczny systemu. Na podstawie tych danych obliczane są statystyki opisowe pozwalające określić skalę analizowanego problemu żywieniowego.
 
@@ -46,7 +46,7 @@ Przedstawiona architektura umożliwia oddzielenie procesu przygotowania bazy wie
 ## Architektura bazy wiedzy
 Kluczowym elementem opracowanego systemu jest baza wiedzy wykorzystywana podczas generowania raportów. Jej zadaniem jest dostarczanie publikacji naukowych powiązanych z analizowanym problemem żywieniowym. W przeciwieństwie do tradycyjnych rozwiązań wykorzystujących wyszukiwanie internetowe w czasie rzeczywistym, w opracowanym systemie zastosowano dedykowaną bazę wiedzy przygotowaną na podstawie wcześniej wyselekcjonowanych publikacji naukowych.
 
-Źródłem wiedzy wykorzystanym w projekcie jest baza PubMed, będąca jednym z największych repozytoriów publikacji z zakresu medycyny, zdrowia publicznego oraz nauk o żywieniu. W celu ograniczenia liczby nieistotnych dokumentów zastosowano zestaw zapytań opartych na terminach MeSH związanych z analizowanymi składnikami odżywczymi. Pozwoliło to na pozyskanie publikacji dotyczących między innymi spożycia błonnika pokarmowego oraz sodu.
+Źródłem wiedzy wykorzystanym w projekcie jest baza PubMed, będąca jednym z największych repozytoriów publikacji z zakresu medycyny, zdrowia publicznego oraz nauk o żywieniu [@pubmed]. W celu ograniczenia liczby nieistotnych dokumentów zastosowano zestaw zapytań opartych na terminach MeSH związanych z analizowanymi składnikami odżywczymi. Pozwoliło to na pozyskanie publikacji dotyczących między innymi spożycia błonnika pokarmowego oraz sodu.
 
 Proces budowy bazy wiedzy rozpoczyna się od pobrania metadanych publikacji, takich jak identyfikator PubMed, tytuł, abstrakt, rok publikacji oraz typ artykułu naukowego. Następnie dla każdej publikacji wyznaczana jest wstępna ocena jakości uwzględniająca rodzaj badania oraz aktualność publikacji. Dzięki temu możliwe jest preferowanie bardziej wartościowych źródeł wiedzy podczas późniejszego procesu wyszukiwania.
 
@@ -56,7 +56,7 @@ Po zakończeniu procesu wzbogacania danych generowane są reprezentacje wektorow
 
 Metadane publikacji oraz odpowiadające im reprezentacje wektorowe przechowywane są w relacyjnej bazie danych PostgreSQL rozszerzonej o moduł pgvector. Rozwiązanie to umożliwia jednoczesne przechowywanie danych opisowych oraz realizację operacji wyszukiwania semantycznego bez konieczności wykorzystywania zewnętrznych baz wektorowych.
 
-Przygotowana w ten sposób baza wiedzy stanowi fundament procesu Retrieval-Augmented Generation wykorzystywanego przez system. W momencie generowania raportu odpowiednie publikacje wyszukiwane są na podstawie podobieństwa semantycznego do analizowanego problemu żywieniowego, a następnie przekazywane do modelu językowego jako dodatkowy kontekst wspomagający interpretację wyników analizy.
+Przygotowana w ten sposób baza wiedzy stanowi fundament procesu Retrieval-Augmented Generation wykorzystywanego przez system [@lewis2020rag]. W momencie generowania raportu odpowiednie publikacje wyszukiwane są na podstawie podobieństwa semantycznego do analizowanego problemu żywieniowego, a następnie przekazywane do modelu językowego jako dodatkowy kontekst wspomagający interpretację wyników analizy.
 
 ## Proces generowania raportu
 Po przygotowaniu bazy wiedzy możliwe jest generowanie raportów wspomagających interpretację wyników analiz żywieniowych. Proces ten wykorzystuje architekturę Retrieval-Augmented Generation, której zadaniem jest połączenie danych statystycznych pochodzących ze zbioru NHANES z informacjami zawartymi w publikacjach naukowych zgromadzonych w bazie wiedzy.

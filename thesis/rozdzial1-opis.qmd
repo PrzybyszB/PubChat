@@ -1,44 +1,13 @@
-# Zdrowie publiczne i żywienie
-
-Odżywianie jest nieodłącznym elementem życia. Człowiek musi jeść by przeżyć. Wraz z pokarmem, człowiek powinien dostarczać odpowiedniej ilości energii oraz składników odżywczych. Jest to niezbędne do prawidłowego funkcjonowania procesów biologicznych, utrzymania sprawności organizmu oraz zmniejszania ryzyka występowania wielu chorób przewlekłych. Zarówno niedobory, jak i nadmiary składników odżywczych mogą prowadzić do negatywnych konsekwencji zdrowotnych, które często ujawniają się po wielu latach.
-
-Współczesne społeczeństwa mają dostęp do coraz większej ilości informacji dotyczących zdrowego stylu życia oraz zasad prawidłowego żywienia. Pomimo tego nieprawidłowe nawyki żywieniowe nadal pozostają istotnym problemem zdrowia publicznego. Niewłaściwa dieta jest uznawana za jeden z czynników ryzyka wielu schorzeń, takich jak choroby układu krążenia, cukrzycy typu 2, nadciśnienia tętnicze czy otyłość. Z tego względu monitorowanie sposobu żywienia społeczeństwa stanowi ważny element działań podejmowanych przez instytucje zajmujące się zdrowiem publicznym.
-
-Ocena stanu odżywiania populacji wymaga gromadzenia oraz analizy dużych ilości danych dotyczących spożycia żywności i składników odżywczych. W tym celu prowadzone są badania populacyjne pozwalające na identyfikację najczęściej występujących problemów żywieniowych oraz obserwację zmian zachodzących w czasie. Wyniki takich analiz mogą stanowić podstawę do opracowywania programów edukacyjnych, kampanii profilaktycznych oraz rekomendacji żywieniowych kierowanych do różnych grup społecznych.
-
-Wraz ze wzrostem ilości dostępnych danych rośnie znaczenie narzędzi informatycznych wspomagających proces ich analizy. Nowoczesne metody analizy danych umożliwiają identyfikację trendów żywieniowych, wykrywanie nieprawidłowości oraz wspieranie ekspertów w procesie podejmowania decyzji. Szczególnego znaczenia nabierają rozwiązania wykorzystujące sztuczną inteligencję oraz automatyczne przetwarzanie informacji naukowej, które mogą przyspieszyć interpretację wyników i ułatwić dostęp do aktualnej wiedzy medycznej.
-
-Pomimo dostępności dużych zbiorów danych żywieniowych oraz obszernej literatury naukowej, proces identyfikacji problemów żywieniowych i ich interpretacji nadal wymaga znacznego nakładu pracy ekspertów. Analitycy zdrowia publicznego oraz specjaliści z zakresu żywienia muszą nie tylko analizować dane dotyczące spożycia składników odżywczych, ale również interpretować wyniki w kontekście aktualnej wiedzy naukowej. W praktyce oznacza to konieczność równoczesnej pracy z danymi statystycznymi oraz przeglądania licznych publikacji naukowych.
-
-Analiza dużych zbiorów danych populacyjnych pozwala na identyfikację niedoborów i nadmiarów składników odżywczych występujących w określonych grupach społecznych. Samo wykrycie problemu nie jest jednak wystarczające do sformułowania wniosków oraz rekomendacji. Konieczne jest również odniesienie wyników do aktualnych badań naukowych opisujących potencjalne skutki zdrowotne obserwowanych zjawisk. Proces ten jest czasochłonny i wymaga specjalistycznej wiedzy zarówno z zakresu żywienia, jak i wyszukiwania oraz oceny jakości literatury naukowej.
-
-Dodatkowym wyzwaniem jest dynamiczny wzrost liczby publikacji naukowych. Bazy takie jak PubMed zawierają miliony artykułów, a każdego roku publikowane są kolejne tysiące prac dotyczących zdrowia i żywienia człowieka. W efekcie ręczne wyszukiwanie najbardziej istotnych publikacji oraz synteza zawartych w nich informacji stają się coraz bardziej wymagające.
-
-Rozwój metod sztucznej inteligencji, w szczególności dużych modeli językowych (Large Language Models, LLM), stwarza nowe możliwości wspomagania procesu analizy danych oraz interpretacji wyników. Szczególne zainteresowanie budzą rozwiązania wykorzystujące architekturę Retrieval-Augmented Generation (RAG), która pozwala łączyć generowanie tekstu przez model językowy z informacjami pochodzącymi z zewnętrznej bazy wiedzy. Takie podejście umożliwia tworzenie raportów opartych zarówno na danych wejściowych, jak i aktualnej literaturze naukowej.
-
-W związku z przedstawionymi wyzwaniami sformułowano następujące pytanie badawcze:
-**W jaki sposób można wykorzystać architekturę Retrieval-Augmented Generation do wspomagania analizy spożycia składników odżywczych oraz generowania raportów opartych na danych żywieniowych i literaturze naukowej?**
-
-Celem niniejszej pracy jest zaprojektowanie oraz implementacja systemu wspomagania analizy spożycia składników odżywczych z wykorzystaniem metod Retrieval-Augmented Generation. Opracowane rozwiązanie ma wspierać analityków zdrowia publicznego w identyfikacji niedoborów i nadmiarów składników odżywczych występujących w badanej populacji oraz dostarczać informacje oparte na aktualnej literaturze naukowej.
-
-W ramach pracy opracowano system umożliwiający analizę danych żywieniowych, automatyczne wykrywanie problemów związanych ze spożyciem wybranych składników odżywczych oraz generowanie raportów wspomagających proces interpretacji wyników. Generowane raporty łączą informacje pochodzące z analizowanego zbioru danych z wiedzą pozyskiwaną z publikacji naukowych.
-
-Istotnym elementem systemu jest wykorzystanie architektury Retrieval-Augmented Generation, która umożliwia wspomaganie procesu generowania raportów za pomocą zewnętrznej bazy wiedzy. W ramach projektu utworzono dedykowaną bazę wiedzy opartą na publikacjach naukowych pozyskanych z bazy PubMed. Artykuły zostały poddane procesowi selekcji, wzbogacenia o dodatkowe metadane oraz przygotowania do wyszukiwania semantycznego.
-
-Zakres pracy obejmuje przygotowanie danych żywieniowych, budowę bazy wiedzy, implementację mechanizmu wyszukiwania publikacji naukowych, implementację modułu generowania raportów oraz stworzenie interfejsu programistycznego umożliwiającego korzystanie z systemu. Działanie rozwiązania zostało zweryfikowane na przykładzie danych pochodzących z programu National Health and Nutrition Examination Survey (NHANES). 
-
-Praca koncentruje się na demonstracji możliwości wykorzystania metod Retrieval-Augmented Generation w obszarze zdrowia publicznego. Opracowany system ma charakter narzędzia wspomagającego podejmowanie decyzji i nie zastępuje oceny dokonywanej przez specjalistów z zakresu zdrowia publicznego oraz żywienia.
-
 ## Charakterystyka zbioru NHANES
 
-NHANES (National Health and Nutrition Examination Survey) to ogólnokrajowe badanie zdrowia i stanu odżywiania populacji prowadzone w Stanach Zjednoczonych. Program jest realizowany przez national Center for Health Statistics, będąc częścią Centers for Disease Control and Prevention (CDC). Badanie zostało uruchomione na poczatku lat 60. XX wieku, natomiast od 1999 roku jest prowadzone w sposób ciągły. Głównym celem NHANES jest monitorowanie stanu zdrowia społeczeństwa amerykańskiego. NHANES łączy dane pochodzące z wywiadów ankietowych, badań lekarskich oraz analiz laboratoryjnych. Zbierane są informacje dotyczące miedzy innymi demografii, sposobu odżywiania, aktywności fizycznej i występowania chorób. Badanie obejmuje reprezentatywną próbe mieszkańców Stanów Zjednoczonych. Dzięki temu uzyskane wyniki mogą być uogólniane na całą populacje kraju. NHANES wyróżnia się wysoką jakością danych oraz standaryzacja procesu ich zbierania. Z tego względu jest jednym z najczęściej wykorzystywanych źródeł danych w badaniach epidemiologicznych, medycznych i z zakresu zdrowia publicznego.
+NHANES to ogólnokrajowe badanie zdrowia i stanu odżywiania populacji prowadzone w Stanach Zjednoczonych [@nhanes_overview]. Program jest realizowany przez national Center for Health Statistics, będąc częścią Centers for Disease Control and Prevention (CDC). Badanie zostało uruchomione na poczatku lat 60. XX wieku, natomiast od 1999 roku jest prowadzone w sposób ciągły. Głównym celem NHANES jest monitorowanie stanu zdrowia społeczeństwa amerykańskiego. NHANES łączy dane pochodzące z wywiadów ankietowych, badań lekarskich oraz analiz laboratoryjnych. Zbierane są informacje dotyczące miedzy innymi demografii, sposobu odżywiania, aktywności fizycznej i występowania chorób. Badanie obejmuje reprezentatywną próbe mieszkańców Stanów Zjednoczonych. Dzięki temu uzyskane wyniki mogą być uogólniane na całą populacje kraju. NHANES wyróżnia się wysoką jakością danych oraz standaryzacja procesu ich zbierania. Z tego względu jest jednym z najczęściej wykorzystywanych źródeł danych w badaniach epidemiologicznych, medycznych i z zakresu zdrowia publicznego [@zipf2013nhanes].
 
 W ramach projektu wykorzystano dwa zbiory danych pochodzace z cyku NHANES 2017-2018: 
   
 * DEMO_J   
 * DR1TOT_J   
 
-Tabela DEMO_J zawiera informacje demograficzne dotyczące uczestników badania, takie jak wiek oraz płeć. Z kolei tabela DR1TOT_J zawiera dane dotyczące spożycia składników odżywczych uzyskane na podstawie pierwszego 24-godzinnego wywiadu żywieniowego (Day 1 Total Nutrient Intakes). Połączenie obu zbiorów umożliwia analizę spożycia składników odżywczych w kontekście cech demogrficznych badanej populcji.
+Tabela DEMO_J zawiera informacje demograficzne dotyczące uczestników badania, takie jak wiek oraz płeć [@nhanes_demo]. Z kolei tabela DR1TOT_J zawiera dane dotyczące spożycia składników odżywczych uzyskane na podstawie pierwszego 24-godzinnego wywiadu żywieniowego (Day 1 Total Nutrient Intakes) [@nhanes_dietary]. Połączenie obu zbiorów umożliwia analizę spożycia składników odżywczych w kontekście cech demogrficznych badanej populcji.
 
 W projekcie wykorzystno wybrne zmienne niezbędne do przeprowdzeni nliz żywieniowych oraz budowy systemu wspomagania decyzji.
 
@@ -76,7 +45,7 @@ Proces przygotowania danych obejmował integrację danych demograficznych i żyw
 
 Po przygotowaniu końcowego zbioru analitycznego przeprowadzono eksploracyjną analizę danych. Jej celem było poznanie podstawowych cech analizowanej populacji oraz identyfikacja protencjalnych problemów żywieniowych związanych ze spozyciem błonnika i sodu.
 
-W pierwszej kolejności przeanalizowałems trukturę demograficzną uczestników badania 
+W pierwszej kolejności przeanalizowałem strukturę demograficzną uczestników badania - wynik przedstawiono na Rysunku 2.1.
 
 ```{python}
 #| echo: false
@@ -112,11 +81,11 @@ plt.show()
 
 ```
 
-Po przygotowaniu końcowego zbioru analitycznego przeprowadzono analizę spożycia błonnika pokarmowego. W pierwszej kolejności obliczono podstawowe statystyki opisowe. W celu lepszej wizualizacji rozkładu spożycia błonnika przygotowano tabelę z wynikami.
-```{python}
+Po przygotowaniu końcowego zbioru analitycznego przeprowadzono analizę spożycia błonnika pokarmowego. W pierwszej kolejności obliczono podstawowe statystyki opisowe. W celu lepszej wizualizacji rozkładu spożycia błonnika przygotowano tabelę z wynikami (Tabela 2.1).
+<!-- ```{python}
 #| echo: false
-#| label: fig-fiber-table
-#| fig-cap: "Wyniki analizy spożycia błonnika"
+#| label: tbl-fiber-table
+#| tbl-cap: "Wyniki analizy spożycia błonnika"
 engine = create_engine(
     "postgresql://postgres:postgres@localhost:5432/diploma_db"
 )
@@ -143,18 +112,31 @@ fiber_table = pd.DataFrame({
     ]
 })
 
-fiber_table
-```
+
+fiber_table.style.format({
+    "Wartość": "{:.1f}"
+})
+``` -->
+
+| Miara | Wartość |
+|:------|--------:|
+| Mediana [g] | 14.3 |
+| 90. percentyl [g] | 29.3 |
+| Udział osób z niedoborem [%] | 72.4 |
+| Udział osób w normie [%] | 24.1 |
+| Udział osób z nadmiarem [%] | 3.5 |
+
+Tabela 2.2. Wyniki analizy spożycia błonnika pokarmowego w badanej populacji.
 
 Mediana spożycia błonnika wyniosła 14,3g dziennie, co oznacza, że połowa uczestników badania spożywała mniej niż tę wartość. Dziewięćdziesiąty percentyl osiągnął wartość 29,3 g, wskazując na stosunkowo niewielką grupę osób spożywających większe ilości błonnika.
 
-Analiza klasyfikacji uczestników wykazała, że około 72,4% badanych zostało zakwalifikowanych do grupy charakteryzującej się niedostatecznym spożyciem błonnika. Jedynie 24,1% uczestników osiągało poziom mieszczący się w przyjętym zakresie prawidłowego spożycia, natomiast nadmiar błonnika występował sporadycznie. Uzyskane wyniki wskazują że, niedobór błonnika może stanowić istotny problem żywieniowy w analizowanej populacji.
+Analiza klasyfikacji uczestników wykazała, że około 72,4% badanych zostało zakwalifikowanych do grupy charakteryzującej się niedostatecznym spożyciem błonnika. Jedynie 24,1% uczestników osiągało poziom mieszczący się w przyjętym zakresie prawidłowego spożycia, natomiast nadmiar błonnika występował sporadycznie. Uzyskane wyniki wskazują że, niedobór błonnika może stanowić istotny problem żywieniowy w analizowanej populacji [@who2023carb, @veronese2025fiber].
 
 Kolejnym analizowanym składnikiem odżywczym był sód. Analogicznie do błonnika obliczono podstawowe statystyki opisowe. Tabela 2.3 przedstawia wyniki analizy spożycia sodu
-```{python}
+<!-- ```{python}
 #| echo: false
-#| label: fig-sodium-table
-#| fig-cap: "Wyniki analizy spożycia sodu"
+#| label: tbl-sodium-table
+#| tbl-cap: "Wyniki analizy spożycia sodu"
 sodium_table = pd.DataFrame({
     "Miara": [
         "Mediana [mg]",
@@ -172,18 +154,26 @@ sodium_table = pd.DataFrame({
     ]
 })
 
-sodium_table
-```
+print(sodium_table.to_markdown(index=False, floatfmt=".1f"))
+``` -->
+
+| Miara | Wartość |
+|:------|--------:|
+| Mediana [mg] | 3091.0 |
+| 90. percentyl [mg] | 5704.0 |
+| Udział osób z niedoborem [%] | 7.7 |
+| Udział osób w normie [%] | 11.3 |
+| Udział osób z nadmiarem [%] | 81.0 |
 
 Mediana spożycia sodu wyniosła 3091 mg dziennie, natomiast dziewięćdziesiąty percentyl osiągnął wartość 5704 mg. Otrzymane wyniki wskazują na występowanie znacznej liczby osób spożywających bardzo duże ilości sodu.
 
-Analiza klasyfikacji wykazała, że około 81% uczestników badania zostało zakwalifikowanych do grupy nadmiernego spożycia sodu. Prawidłowy poziom spożycia odnotowano jedynie u około 11,3% badanych, natomiast niedobór występował u około 7,7% uczestników. Uzyskane wyniki sugerują, że nadmierne spożycie sodu stanowi istotny problem zdrowotny w analizowanej populacji.
+Analiza klasyfikacji wykazała, że około 81% uczestników badania zostało zakwalifikowanych do grupy nadmiernego spożycia sodu. Prawidłowy poziom spożycia odnotowano jedynie u około 11,3% badanych, natomiast niedobór występował u około 7,7% uczestników. Uzyskane wyniki sugerują, że nadmierne spożycie sodu stanowi istotny problem zdrowotny w analizowanej populacji [@who2026sodium; @bailey2024salt].
 
 ### Wnioski z analizy eksploracyjnej
 
 Przeprowadzona analiza eksploracyjna wykazała występowanie dwóch wyraźnych problemów żywieniowych w analizowanej populacji. Z jednej strony zaobserwowano bardzo wysoki odsetek osób spożywających niewystarczające ilości błonnika, z drugiej natomiast znaczący udział uczestników charakteryzujących się nadmiernym spożyciem sodu.
 
-Wyniki te pokazują, że analiza danych populacyjnych pozwala skutecznie identyfikować potencjalne problemy żywieniowe. Same statystyki opisowe nie dostarczają jednak informacji o możliwych konsekwencjach zdrowotnych obserwowanych zjawisk. Aby właściwie interpretować uzyskane wyniki, konieczne jest odniesienie ich do aktualnej wiedzy naukowej oraz publikacji opisujących wpływ poszczególnych składników odżywczych na zdrowie człowieka.
+Wyniki te pokazują, że analiza danych reprezentacyjncyh pozwala skutecznie identyfikować potencjalne problemy żywieniowe. Same statystyki opisowe nie dostarczają jednak informacji o możliwych konsekwencjach zdrowotnych obserwowanych zjawisk. Aby właściwie interpretować uzyskane wyniki, konieczne jest odniesienie ich do aktualnej wiedzy naukowej oraz publikacji opisujących wpływ poszczególnych składników odżywczych na zdrowie człowieka.
 
 Przedstawione ograniczenie stanowi podstawę do opracowania systemu wykorzystującego architekturę Retrieval-Augmented Generation, którego zadaniem jest wspomaganie analityka poprzez automatyczne wyszukiwanie publikacji naukowych oraz generowanie raportów opartych zarówno na danych statystycznych, jak i aktualnej literaturze naukowej.
 
