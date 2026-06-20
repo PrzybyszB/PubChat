@@ -45,7 +45,7 @@ Proces przygotowania danych obejmował integrację danych demograficznych i żyw
 
 Po przygotowaniu końcowego zbioru analitycznego przeprowadzono eksploracyjną analizę danych. Jej celem było poznanie podstawowych cech analizowanej populacji oraz identyfikacja protencjalnych problemów żywieniowych związanych ze spozyciem błonnika i sodu.
 
-W pierwszej kolejności przeanalizowałem strukturę demograficzną uczestników badania - wynik przedstawiono na Rysunku 2.1.
+W pierwszej kolejności przeanalizowałem strukturę demograficzną uczestników badania - wynik przedstawiono na wykresie (@fig-age-distribution).
 
 ```{python}
 #| echo: false
@@ -81,42 +81,9 @@ plt.show()
 
 ```
 
-Po przygotowaniu końcowego zbioru analitycznego przeprowadzono analizę spożycia błonnika pokarmowego. W pierwszej kolejności obliczono podstawowe statystyki opisowe. W celu lepszej wizualizacji rozkładu spożycia błonnika przygotowano tabelę z wynikami (Tabela 2.1).
-<!-- ```{python}
-#| echo: false
-#| label: tbl-fiber-table
-#| tbl-cap: "Wyniki analizy spożycia błonnika"
-engine = create_engine(
-    "postgresql://postgres:postgres@localhost:5432/diploma_db"
-)
+Po przygotowaniu końcowego zbioru analitycznego przeprowadzono analizę spożycia błonnika pokarmowego. W pierwszej kolejności obliczono podstawowe statystyki opisowe. W celu lepszej wizualizacji rozkładu spożycia błonnika przygotowano tabelę z wynikami (@tbl-fiber-results).
 
-gold_stats = pd.read_sql(
-    "SELECT * FROM gold_stats",
-    engine
-)
-
-fiber_table = pd.DataFrame({
-    "Miara": [
-        "Mediana [g]",
-        "90 percentyl [g]",
-        "Niedobór [%]",
-        "Norma [%]",
-        "Nadmiar [%]"
-    ],
-    "Wartość": [
-        gold_stats.loc[0, "median_fiber_g"],
-        gold_stats.loc[0, "p90_fiber_g"],
-        gold_stats.loc[0, "pct_low_fiber"],
-        gold_stats.loc[0, "pct_normal_fiber"],
-        gold_stats.loc[0, "pct_high_fiber"]
-    ]
-})
-
-
-fiber_table.style.format({
-    "Wartość": "{:.1f}"
-})
-``` -->
+Table: Wyniki analizy spożycia błonnika pokarmowego w badanej populacji {#tbl-fiber-results}
 
 | Miara | Wartość |
 |:------|--------:|
@@ -126,36 +93,13 @@ fiber_table.style.format({
 | Udział osób w normie [%] | 24.1 |
 | Udział osób z nadmiarem [%] | 3.5 |
 
-Tabela 2.2. Wyniki analizy spożycia błonnika pokarmowego w badanej populacji.
-
 Mediana spożycia błonnika wyniosła 14,3g dziennie, co oznacza, że połowa uczestników badania spożywała mniej niż tę wartość. Dziewięćdziesiąty percentyl osiągnął wartość 29,3 g, wskazując na stosunkowo niewielką grupę osób spożywających większe ilości błonnika.
 
 Analiza klasyfikacji uczestników wykazała, że około 72,4% badanych zostało zakwalifikowanych do grupy charakteryzującej się niedostatecznym spożyciem błonnika. Jedynie 24,1% uczestników osiągało poziom mieszczący się w przyjętym zakresie prawidłowego spożycia, natomiast nadmiar błonnika występował sporadycznie. Uzyskane wyniki wskazują że, niedobór błonnika może stanowić istotny problem żywieniowy w analizowanej populacji [@who2023carb, @veronese2025fiber].
 
-Kolejnym analizowanym składnikiem odżywczym był sód. Analogicznie do błonnika obliczono podstawowe statystyki opisowe. Tabela 2.3 przedstawia wyniki analizy spożycia sodu
-<!-- ```{python}
-#| echo: false
-#| label: tbl-sodium-table
-#| tbl-cap: "Wyniki analizy spożycia sodu"
-sodium_table = pd.DataFrame({
-    "Miara": [
-        "Mediana [mg]",
-        "90 percentyl [mg]",
-        "Niedobór [%]",
-        "Norma [%]",
-        "Nadmiar [%]"
-    ],
-    "Wartość": [
-        gold_stats.loc[0, "median_sodium_mg"],
-        gold_stats.loc[0, "p90_sodium_mg"],
-        gold_stats.loc[0, "pct_low_sodium"],
-        gold_stats.loc[0, "pct_normal_sodium"],
-        gold_stats.loc[0, "pct_high_sodium"]
-    ]
-})
+Kolejnym analizowanym składnikiem odżywczym był sód. Analogicznie do błonnika obliczono podstawowe statystyki opisowe. @tbl-sodium-results przedstawia wyniki analizy spożycia sodu
 
-print(sodium_table.to_markdown(index=False, floatfmt=".1f"))
-``` -->
+Table: Wyniki analizy spożycia sodu w badanej populacji {#tbl-sodium-results}
 
 | Miara | Wartość |
 |:------|--------:|

@@ -45,10 +45,6 @@ POPULATION_SCORE_MAP = {
 
 Najwyższą ocenę otrzymują badania prowadzone na ludziach, ponieważ są one najbardziej przydatne z punktu widzenia analizy zdrowia publicznego. Badania wykorzystujące wyłącznie modele zwierzęce otrzymują niższą punktację, natomiast artykuły, dla których nie udało się jednoznacznie określić rodzaju populacji, nie otrzymują dodatkowych punktów. Końcowa ocena publikacji wyznaczana jest poprzez połączenie oceny jakości publikacji oraz punktacji przyznanej przez model językowy.
 
-```python
-llm_final_score = quality_score + llm_population_score
-```
-
 Dzięki temu podczas późniejszego wyszukiwania preferowane są publikacje nie tylko wysokiej jakości, ale również bardziej użyteczne z punktu widzenia analiz dotyczących zdrowia człowieka.Po zakończeniu procesu wzbogacania metadanych dla każdej publikacji generowana jest reprezentacja wektorowa wykorzystywana przez mechanizm wyszukiwania semantycznego. Na potrzeby tworzenia embeddingów połączono tytuł oraz abstrakt publikacji w pojedynczy dokument tekstowy.
 
 ```python

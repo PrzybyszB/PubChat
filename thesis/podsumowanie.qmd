@@ -1,4 +1,4 @@
-# Podsumowanie
+# Podsumowanie {.unnumbered}
 Celem niniejszej pracy było opracowanie systemu wspomagającego analizę spożycia składników odżywczych z wykorzystaniem metod Retrieval-Augmented Generation. W ramach realizacji projektu połączono dane żywieniowe pochodzące z badania NHANES z bazą wiedzy utworzoną na podstawie publikacji naukowych pozyskanych z bazy PubMed. Opracowane rozwiązanie umożliwia automatyczną analizę danych populacyjnych, wyszukiwanie literatury naukowej związanej z analizowanym problemem oraz generowanie raportów wspierających interpretację uzyskanych wyników.
 
 W pierwszej części pracy przedstawiono problematykę zdrowia publicznego oraz znaczenie analizy danych żywieniowych. Omówiono również charakterystykę wykorzystanego zbioru danych NHANES oraz proces przygotowania danych do dalszych analiz. Przeprowadzona eksploracyjna analiza danych pozwoliła zidentyfikować problemy związane ze spożyciem błonnika pokarmowego oraz sodu w analizowanej populacji.
