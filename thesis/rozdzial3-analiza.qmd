@@ -3,6 +3,7 @@ Pierwszym etapem implementacji systemu było przygotowanie bazy wiedzy wykorzyst
 
 Po pobraniu artykułów zaimplementowano mechanizm oceny jakości publikacji naukowych. Celem tego etapu było preferowanie badań dostarczających bardziej wiarygodnych dowodów naukowych. W systemie wykorzystano punktację opartą na rodzaju publikacji.
 
+::: {#lst-publication-score}
 ```python
 SCORE_MAP = {
     "Meta-Analysis": 5,
@@ -13,8 +14,11 @@ SCORE_MAP = {
 }
 ```
 
+: Punktacja typów publikacji naukowych
+:::
 Najwyższą ocenę otrzymują metaanalizy oraz przeglądy systematyczne, ponieważ stanowią one najwyższy poziom dowodów naukowych. Niższą punktację przyznano pojedynczym artykułom naukowym.Oprócz rodzaju publikacji uwzględniono również aktualność badań. Nowsze publikacje otrzymują dodatkowe punkty zwiększające ich znaczenie podczas późniejszego procesu wyszukiwania.
 
+::: {#lst-year-score}
 ```python
 year_bonus = 0
 
@@ -30,11 +34,14 @@ if year:
 
 total_quality_score = type_score + year_bonus
 ```
+: Algorytm uwzględniający rok publikacji
+:::
 
 Tak wyznaczona wartość quality_score stanowi podstawową ocenę jakości publikacji wykorzystywaną przez kolejne etapy systemu.
 
 Ocena jakości publikacji została rozszerzona o dodatkowe informacje pozyskiwane automatycznie przy użyciu dużego modelu językowego. Zadaniem modelu było przeanalizowanie abstraktu artykułu i określenie rodzaju badanej populacji. W systemie przyjęto trzy możliwe klasy:
 
+::: {#lst-population-score}
 ```python
 POPULATION_SCORE_MAP = {
     "human": 2,
@@ -42,11 +49,14 @@ POPULATION_SCORE_MAP = {
     "unknown": 0
 }
 ```
+: Punktacja typu populacji badawczej
+:::
 
 Najwyższą ocenę otrzymują badania prowadzone na ludziach, ponieważ są one najbardziej przydatne z punktu widzenia analizy zdrowia publicznego. Badania wykorzystujące wyłącznie modele zwierzęce otrzymują niższą punktację, natomiast artykuły, dla których nie udało się jednoznacznie określić rodzaju populacji, nie otrzymują dodatkowych punktów. Końcowa ocena publikacji wyznaczana jest poprzez połączenie oceny jakości publikacji oraz punktacji przyznanej przez model językowy.
 
 Dzięki temu podczas późniejszego wyszukiwania preferowane są publikacje nie tylko wysokiej jakości, ale również bardziej użyteczne z punktu widzenia analiz dotyczących zdrowia człowieka.Po zakończeniu procesu wzbogacania metadanych dla każdej publikacji generowana jest reprezentacja wektorowa wykorzystywana przez mechanizm wyszukiwania semantycznego. Na potrzeby tworzenia embeddingów połączono tytuł oraz abstrakt publikacji w pojedynczy dokument tekstowy.
 
+::: {#lst-embedding-text}
 ```python
 def build_embedding_text(row):
     return f"""
@@ -57,6 +67,8 @@ Abstract:
 {row.abstract}
 """
 ```
+: Budowa tekstu wejściowego dla modelu embeddingowego
+:::
 
 Tak przygotowany tekst przekazywany jest do modelu embeddingowego, który generuje reprezentację numeryczną opisującą znaczenie publikacji. Wektory zapisywane są w bazie PostgreSQL z wykorzystaniem rozszerzenia pgvector. Podczas generowania raportu system tworzy embedding zapytania opisującego analizowany problem żywieniowy. Następnie wykonywane jest wyszukiwanie semantyczne wśród zapisanych wektorów publikacji. Uzyskane wyniki są dodatkowo sortowane z uwzględnieniem wcześniej wyznaczonej oceny jakości artykułu. Takie podejście pozwala jednocześnie uwzględniać znaczenie publikacji względem analizowanego problemu oraz wartość naukową danego źródła.
 
