@@ -13,8 +13,6 @@ book:
     - rozdzial3-analiza.qmd
     - podsumowanie.qmd
   references: references.qmd
-  appendices: 
-    - zalacznik1.qmd
 
 bibliography: references.bib
 csl: apa.csl

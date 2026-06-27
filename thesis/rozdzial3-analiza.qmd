@@ -1,7 +1,7 @@
 # Implementacja systemu
 Pierwszym etapem implementacji systemu było przygotowanie bazy wiedzy wykorzystywanej podczas generowania raportów. W tym celu pobrano publikacje naukowe z bazy PubMed, a następnie zapisano ich metadane w relacyjnej bazie danych PostgreSQL.
 
-Po pobraniu artykułów zaimplementowano mechanizm oceny jakości publikacji naukowych. Celem tego etapu było preferowanie badań dostarczających bardziej wiarygodnych dowodów naukowych. W systemie wykorzystano punktację opartą na rodzaju publikacji.
+Po pobraniu artykułów zaimplementowano mechanizm oceny jakości publikacji naukowych. Celem tego etapu było preferowanie badań dostarczających bardziej wiarygodnych dowodów naukowych. W systemie wykorzystano punktację opartą na rodzaju publikacji (@lst-publication-score).
 
 ::: {#lst-publication-score}
 ```python
@@ -16,7 +16,7 @@ SCORE_MAP = {
 
 : Punktacja typów publikacji naukowych
 :::
-Najwyższą ocenę otrzymują metaanalizy oraz przeglądy systematyczne, ponieważ stanowią one najwyższy poziom dowodów naukowych. Niższą punktację przyznano pojedynczym artykułom naukowym.Oprócz rodzaju publikacji uwzględniono również aktualność badań. Nowsze publikacje otrzymują dodatkowe punkty zwiększające ich znaczenie podczas późniejszego procesu wyszukiwania.
+Najwyższą ocenę otrzymują metaanalizy oraz przeglądy systematyczne, ponieważ stanowią one najwyższy poziom dowodów naukowych. Niższą punktację przyznano pojedynczym artykułom naukowym. Oprócz rodzaju publikacji uwzględniono również aktualność badań. Nowsze publikacje otrzymują dodatkowe punkty zwiększające ich znaczenie podczas późniejszego procesu wyszukiwania (@lst-year-score).
 
 ::: {#lst-year-score}
 ```python
@@ -39,7 +39,7 @@ total_quality_score = type_score + year_bonus
 
 Tak wyznaczona wartość quality_score stanowi podstawową ocenę jakości publikacji wykorzystywaną przez kolejne etapy systemu.
 
-Ocena jakości publikacji została rozszerzona o dodatkowe informacje pozyskiwane automatycznie przy użyciu dużego modelu językowego. Zadaniem modelu było przeanalizowanie abstraktu artykułu i określenie rodzaju badanej populacji. W systemie przyjęto trzy możliwe klasy:
+Ocena jakości publikacji została rozszerzona o dodatkowe informacje pozyskiwane automatycznie przy użyciu dużego modelu językowego. Zadaniem modelu było przeanalizowanie abstraktu artykułu i określenie rodzaju badanej populacji. W systemie przyjęto trzy możliwe klasy (@lst-population-score).
 
 ::: {#lst-population-score}
 ```python
@@ -54,7 +54,7 @@ POPULATION_SCORE_MAP = {
 
 Najwyższą ocenę otrzymują badania prowadzone na ludziach, ponieważ są one najbardziej przydatne z punktu widzenia analizy zdrowia publicznego. Badania wykorzystujące wyłącznie modele zwierzęce otrzymują niższą punktację, natomiast artykuły, dla których nie udało się jednoznacznie określić rodzaju populacji, nie otrzymują dodatkowych punktów. Końcowa ocena publikacji wyznaczana jest poprzez połączenie oceny jakości publikacji oraz punktacji przyznanej przez model językowy.
 
-Dzięki temu podczas późniejszego wyszukiwania preferowane są publikacje nie tylko wysokiej jakości, ale również bardziej użyteczne z punktu widzenia analiz dotyczących zdrowia człowieka.Po zakończeniu procesu wzbogacania metadanych dla każdej publikacji generowana jest reprezentacja wektorowa wykorzystywana przez mechanizm wyszukiwania semantycznego. Na potrzeby tworzenia embeddingów połączono tytuł oraz abstrakt publikacji w pojedynczy dokument tekstowy.
+Dzięki temu podczas późniejszego wyszukiwania preferowane są publikacje nie tylko wysokiej jakości, ale również bardziej użyteczne z punktu widzenia analiz dotyczących zdrowia człowieka.Po zakończeniu procesu wzbogacania metadanych dla każdej publikacji generowana jest reprezentacja wektorowa wykorzystywana przez mechanizm wyszukiwania semantycznego. Na potrzeby tworzenia embeddingów połączono tytuł oraz abstrakt publikacji w pojedynczy dokument tekstowy (@lst-embedding-text).
 
 ::: {#lst-embedding-text}
 ```python
@@ -90,7 +90,7 @@ Table: Publikacje naukowe zwrócone przez moduł Retrieval dla scenariusza niedo
 
 Źródło: opracowanie własne na podstawie publikacji [@veronese2025fiber; @haas2025meatmark; @vankalkeren2026fiber].
 
-Analiza wyników wskazuje, że wszystkie zwrócone publikacje dotyczyły wpływu spożycia błonnika na zdrowie człowieka. Wśród najwyżej ocenionych artykułów znalazły się metaanalizy, przeglądy systematyczne oraz badania prowadzone na populacji ludzkiej, co potwierdza poprawność działania zastosowanego mechanizmu rankingu. Na podstawie odnalezionych publikacji oraz wyników analizy statystycznej model językowy wygenerował raport interpretujący zaobserwowane zjawisko.
+Analiza wyników (@tbl-fiber) wskazuje, że wszystkie zwrócone publikacje dotyczyły wpływu spożycia błonnika na zdrowie człowieka. Wśród najwyżej ocenionych artykułów znalazły się metaanalizy, przeglądy systematyczne oraz badania prowadzone na populacji ludzkiej, co potwierdza poprawność działania zastosowanego mechanizmu rankingu. Na podstawie odnalezionych publikacji oraz wyników analizy statystycznej model językowy wygenerował raport interpretujący zaobserwowane zjawisko. Ze względu na objętość raportu poniżej przedstawiono jedynie fragment sekcji Evidence From Literature, zawierającej podsumowanie najważniejszych wyników odnalezionych badań naukowych.
 
 >2. Evidence From Literature  
 >An umbrella review (PMID: 40651334) synthesizing data from over 17 million individuals confirms that higher dietary fiber intake is convincingly associated with reduced risk of cardiovascular disease (CVD) mortality, pancreatic cancer, and diverticular disease. Additional evidence suggests fiber intake lowers all-cause mortality and coronary heart disease risk. Another randomized study (PMID: 40537680) demonstrated that fiber supplementation can reduce gut microbial production of trimethylamine-N-oxide (TMAO), a metabolite linked to increased CVD risk, particularly in individuals with lower habitual meat consumption. Furthermore, a controlled trial (PMID: 41459804) highlights that fermentable fiber improves insulin sensitivity and metabolic health by modulating gut microbiota and increasing beneficial short-chain fatty acid production.
@@ -109,7 +109,7 @@ Table: Publikacje naukowe zwrócone przez moduł Retrieval dla scenariusza nadmi
 
 Źródło: opracowanie własne na podstawie publikacji [@bailey2024salt; @zoccali2025salt; @nishimoto2024salt].
 
-Zwrócone publikacje koncentrowały się na wpływie nadmiernego spożycia sodu na zdrowie człowieka, ze szczególnym uwzględnieniem chorób układu sercowo-naczyniowego oraz nadciśnienia tętniczego. Podobnie jak w poprzednim scenariuszu najwyższe pozycje zajmowały publikacje posiadające wysoką ocenę jakości naukowej. Na podstawie wyników wyszukiwania oraz danych statystycznych system wygenerował raport opisujący analizowany problem.
+Zwrócone publikacje (@tbl-sodium) koncentrowały się na wpływie nadmiernego spożycia sodu na zdrowie człowieka, ze szczególnym uwzględnieniem chorób układu sercowo-naczyniowego oraz nadciśnienia tętniczego. Podobnie jak w poprzednim scenariuszu najwyższe pozycje zajmowały publikacje posiadające wysoką ocenę jakości naukowej. Na podstawie wyników wyszukiwania oraz danych statystycznych system wygenerował raport opisujący analizowany problem. Poniżej przedstawiono jedynie fragment sekcji Public Health Implications wygenerowanego raportu, odnoszącej się do potencjalnych konsekwencji zdrowotnych obserwowanego zjawiska.
 
 >3. Public Health Implications
 >Given that over three-quarters of the population exceed sodium intake recommendations, there is a heightened risk of hypertension, cardiovascular disease, and premature mortality. The high prevalence of salt sensitivity amplifies these risks, particularly among older adults and individuals with comorbidities such as obesity. Excessive sodium intake contributes to increased healthcare burden due to hypertension-related complications.

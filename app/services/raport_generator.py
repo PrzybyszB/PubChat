@@ -105,7 +105,7 @@ def generate_report(nutrient_name, median_value, mean_value, p90_value, pct_low,
 
     sources = "\n".join(
         [
-            f"- PMID: {article['pubmed_id']}"
+            f"- PMID: {article['pubmed_id']} | Similarity: {article['similarity']:.3f}"
             for article in articles
         ]
     )
@@ -118,23 +118,42 @@ Sources:
 """
 if __name__ == "__main__":
 
+    # articles = retrieve_articles(
+    #     query_text=QUERY_MAP["fiber_deficiency"]["query"],
+    #     final_top_k=3
+    # )
+
+    # report = generate_report(
+    #     nutrient_name="Dietary Fiber",
+
+    #     mean_value=16.1,
+    #     median_value=13.9,
+    #     p90_value=28.9,
+
+    #     pct_low=55.1,
+    #     pct_normal=36.1,
+    #     pct_high=8.8,
+
+    #     articles=articles
+    # )
+
     articles = retrieve_articles(
-        query_text=QUERY_MAP["fiber_deficiency"]["query"],
+        query_text=QUERY_MAP["sodium_excess"]["query"],
         final_top_k=3
     )
 
     report = generate_report(
-        nutrient_name="Dietary Fiber",
+        nutrient_name="Sodium",
 
-        mean_value=16.1,
-        median_value=13.9,
-        p90_value=28.9,
+        mean_value=3500,
+        median_value=2989.5,
+        p90_value=5612.1,
 
-        pct_low=55.1,
-        pct_normal=36.1,
-        pct_high=8.8,
-
+        pct_low=9.9,
+        pct_normal=11.9,
+        pct_high=78.1,
         articles=articles
     )
+
 
     print(report)
